@@ -32,13 +32,13 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 ## 3. Technology Stack (AI Engineer Standard)
 
 * **Environment & Package Management:** `uv` (Python 3.12+)
-* **Data Ingestion:** `dlt` (Data Load Tool) + Notion API (Recursive hierarchical crawling)
+* **Data Ingestion:** `notion-client` (Recursive hierarchical crawling)
 * **Vector & Relational Database:** PostgreSQL with `pgvector` extension
-* **Embedding Model:** Google Gemini `text-embedding-004`
-* **Retrieval Framework:** Native Python / LangChain
+* **Embedding Model:** Google Gemini `text-embedding-004` (via OpenAI-compatible SDK)
+* **Retrieval Framework:** Native Python
 * **Search Strategy:** Hybrid Search (BM25 Full-text + Vector Embeddings) + Reciprocal Rank Fusion (RRF)
-* **Re-ranking:** Cohere Rerank / Cross-Encoder
-* **LLM Generation:** Google Gemini (`gemini-1.5-pro` for deep reasoning, `gemini-1.5-flash` for query rewriting)
+* **Re-ranking:** Cross-Encoder (Hugging Face)
+* **LLM Generation:** Google Gemini `gemini-2.0-flash-lite` (via OpenAI SDK)
 * **User Interface:** Streamlit
 * **Monitoring & Observability:** Grafana (Dashboards connected to PostgreSQL)
 * **Deployment:** Docker Compose, AWS Cloud (AWS ECS / EC2)
@@ -48,37 +48,42 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 ## 4. Master Execution Plan (Step-by-Step Tasks)
 
 ### Phase 1: Project & Environment Setup
-- [ ] Initialize project directory and Git repository.
-- [ ] Setup Python environment using `uv` (e.g., `uv venv`, `uv pip install ...`).
+- [x] Initialize project directory and Git repository.
+- [x] Setup Python environment using `uv` (`uv venv`, `uv add ...`).
+- [x] Add `.gitignore` and `.env.example`.
 - [ ] Create `docker-compose.yml` to spin up PostgreSQL (`pgvector`) and Grafana locally.
-- [ ] Initialize database schema (Tables for: `documents`, `chunks`, `app_monitoring_logs`).
+- [ ] Initialize database schema (Tables: `documents`, `chunks`, `app_monitoring_logs`).
 
 ### Phase 2: Hierarchical Data Ingestion
 - [ ] Duplicate "The Company Building Handbook" to personal Notion workspace.
-- [ ] Create Notion Integration and obtain `NOTION_API_KEY`.
-- [ ] Write a Python script using `dlt` or standard requests to fetch pages from Notion via API.
-- [ ] Implement **Recursive Crawling**: Ensure the script captures parent-child page relationships.
-- [ ] Implement **Hierarchical Chunking**: Split text while preserving metadata (`page_title`, `parent_page`, `breadcrumb`).
-- [ ] Generate vector embeddings using Gemini `text-embedding-004` and load chunks + metadata into PostgreSQL.
+- [x] Create Notion Integration and obtain `NOTION_API_KEY`.
+- [x] Write `ingestion/notion_crawler.py` — recursive crawler with pagination & rate-limit retry.
+- [x] Implement **Recursive Crawling** — captures parent-child page relationships and breadcrumb.
+- [x] Write `ingestion/text_extractor.py` — converts Notion blocks to structured plain text.
+- [/] Write `ingestion/chunker.py` — heading-aware chunking with token-based size control.
+- [ ] Write `ingestion/embedder.py` — batch embedding via Gemini `text-embedding-004` (OpenAI SDK).
+- [ ] Write `ingestion/loader.py` — upsert chunks + embeddings into PostgreSQL.
+- [ ] Write `ingestion/run_ingestion.py` — orchestrate the full pipeline.
+- [ ] Run ingestion and verify chunks loaded correctly into PostgreSQL.
 
 ### Phase 3: Advanced Retrieval & Generation Pipeline
-- [ ] Implement **Query Rewriting**: Write a prompt using `gemini-1.5-flash` to expand the user's query with management synonyms.
-- [ ] Implement **Hybrid Search**: Write SQL queries using `pgvector` for Cosine Similarity and `to_tsvector` for BM25.
-- [ ] Implement **Reciprocal Rank Fusion (RRF)** to combine Vector and Keyword search results.
-- [ ] Implement **Document Re-ranking**: Pass the Top-K results through a Re-ranker model to get the final Top-3 chunks.
-- [ ] Build the Generation Prompt: Inject the Top-3 chunks and construct the final response using `gemini-1.5-pro` via the official `google-genai` SDK.
+- [ ] Implement **Query Rewriting** using `gemini-2.0-flash-lite` to expand synonyms.
+- [ ] Implement **Hybrid Search**: pgvector cosine similarity + `to_tsvector` BM25.
+- [ ] Implement **Reciprocal Rank Fusion (RRF)** to merge vector and keyword results.
+- [ ] Implement **Document Re-ranking**: Cross-Encoder (Hugging Face) for Top-K reranking.
+- [ ] Build generation prompt and final response via `gemini-2.0-flash-lite` (OpenAI SDK).
 
 ### Phase 4: System Evaluation (Retrieval & LLM)
-- [ ] Create a Ground Truth dataset (15-20 Q&A pairs with corresponding correct chunk IDs).
-- [ ] Evaluate Retrieval: Calculate **Hit Rate@K** and **MRR** comparing Vector Search vs. Hybrid Search vs. Hybrid + Reranker.
-- [ ] Evaluate LLM: Use `ragas` or LLM-as-a-judge (using Gemini) to score answers on Faithfulness and Answer Relevance.
-- [ ] Document evaluation results.
+- [ ] Create a Ground Truth dataset (15-20 Q&A pairs with correct chunk IDs).
+- [ ] Evaluate Retrieval: **Hit Rate@K** and **MRR** — Vector vs. Hybrid vs. Hybrid+Reranker.
+- [ ] Evaluate LLM: Gemini-as-a-judge scoring Faithfulness and Answer Relevance.
+- [ ] Document evaluation results in `README.md`.
 
 ### Phase 5: Streamlit Interface & Feedback Logging
 - [ ] Build a Streamlit chat interface.
 - [ ] Display citations/sources (Breadcrumbs) below each LLM response.
 - [ ] Add interactive Thumbs Up / Thumbs Down feedback buttons.
-- [ ] Write logic to log every interaction (User Query, Response, Latency, Rating) to the PostgreSQL `app_monitoring_logs` table.
+- [ ] Log every interaction (Query, Response, Latency, Rating, Retrieved Chunks) to `app_monitoring_logs`.
 
 ### Phase 6: Monitoring Dashboard
 - [ ] Connect local Grafana to the PostgreSQL database.
@@ -86,16 +91,17 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - [ ] Build Dashboard Chart 2: Average System Latency.
 - [ ] Build Dashboard Chart 3: User Satisfaction Score (Thumbs up ratio).
 - [ ] Build Dashboard Chart 4: Negative Feedback Logs (Table view for debugging).
-- [ ] Export Grafana dashboard JSON to include in the repository.
+- [ ] Export Grafana dashboard JSON to repository.
 
 ### Phase 7: Containerization & Cloud Deployment
 - [ ] Write a `Dockerfile` for the Streamlit application.
-- [ ] Update `docker-compose.yml` to include the Streamlit app container alongside DB and Grafana.
-- [ ] Provision AWS infrastructure (AWS ECS or an EC2 instance).
-- [ ] Deploy the complete system to AWS and ensure it is accessible via public IP/Domain.
+- [ ] Update `docker-compose.yml` to include the Streamlit app container.
+- [ ] Provision AWS infrastructure (EC2 `t3.micro` recommended for cost).
+- [ ] Deploy the complete system to AWS and ensure public access.
 
 ### Phase 8: Final Documentation
 - [ ] Write a comprehensive `README.md` addressing all Capstone evaluation criteria.
 - [ ] Add system architecture diagrams.
-- [ ] Provide clear, step-by-step instructions on how to run the project locally via Docker.
-- [ ] Record a short 2-3 minute demo video showing the UI, search quality, and Grafana dashboard.
+- [ ] Include Evaluation Results (Hit Rate, MRR, Faithfulness scores).
+- [ ] Provide clear instructions on how to run locally via Docker.
+- [ ] Record a short 2-3 minute demo video (UI, search quality, Grafana dashboard).

@@ -1,0 +1,55 @@
+services:
+  # PostgreSQL with pgvector extension for vector similarity search
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: startup_os_postgres
+    environment:
+      POSTGRES_DB: startup_os
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d startup_os"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgAdmin — PostgreSQL web UI (access at http://localhost:5050)
+  # Login: admin@admin.com / admin
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: startup_os_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"      # Run in desktop mode (no login required)
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Grafana for monitoring dashboard (Phase 6)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: startup_os_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  grafana_data:
