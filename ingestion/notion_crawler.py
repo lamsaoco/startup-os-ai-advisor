@@ -29,6 +29,7 @@ class PageData:
     url: str
     last_edited: str
     blocks: list[dict]         # Raw Notion blocks (text not yet extracted)
+    is_changed: bool = True    # True if last_edited differs from DB
 
 
 class NotionCrawler:
@@ -40,9 +41,11 @@ class NotionCrawler:
 
     # ── Public API ────────────────────────────────────────────────────────────
 
-    def crawl(self, root_page_id: str) -> list[PageData]:
+    def crawl(self, root_page_id: str, limit: int = 0, db_state: dict[str, str] = None) -> list[PageData]:
         """Start crawling from root_page_id, return flat list of all pages."""
         self._pages = []
+        self._limit = limit
+        self._db_state = db_state or {}
         print(f"[Crawler] Starting from root page: {root_page_id}")
         self._crawl_page(
             page_id=root_page_id,
@@ -61,6 +64,8 @@ class NotionCrawler:
         breadcrumb_list: list[str],
     ) -> None:
         """Crawl one page: fetch metadata, fetch blocks, recurse into child pages."""
+        if getattr(self, "_limit", 0) and len(self._pages) >= self._limit:
+            return
         # 1. Fetch page metadata
         page_meta = self._get_page_meta(page_id)
         if page_meta is None:
@@ -72,7 +77,13 @@ class NotionCrawler:
 
         print(f"[Crawler]   {'  ' * len(breadcrumb_list)}↳ {title}")
 
-        # 2. Fetch all blocks (handles pagination internally)
+        # Check if page has changed compared to DB state
+        last_edited = page_meta["last_edited"]
+        is_changed = (self._db_state.get(page_id) != last_edited)
+        if not is_changed:
+            print(f"[Crawler]   {'  ' * len(breadcrumb_list)}  (Unchanged, skipping blocks payload)")
+
+        # 2. Fetch all blocks to find child_pages (and content if changed)
         blocks = self._fetch_all_blocks(page_id)
 
         # 3. Store this page
@@ -83,8 +94,9 @@ class NotionCrawler:
             breadcrumb=breadcrumb_str,
             breadcrumb_list=new_breadcrumb,
             url=page_meta["url"],
-            last_edited=page_meta["last_edited"],
-            blocks=blocks,
+            last_edited=last_edited,
+            blocks=blocks if is_changed else [],  # Drop blocks if unchanged to save memory
+            is_changed=is_changed,
         ))
 
         # 4. Find child_page blocks and recurse into them

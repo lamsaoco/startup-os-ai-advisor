@@ -16,6 +16,7 @@ from ingestion.config import (
     POSTGRES_DB,
     POSTGRES_USER,
     POSTGRES_PASSWORD,
+    EMBEDDING_DIMENSIONS,
 )
 from ingestion.chunker import Chunk
 from ingestion.notion_crawler import PageData
@@ -38,6 +39,17 @@ def get_connection():
     # Register pgvector type so psycopg2 handles vector columns natively
     register_vector(conn)
     return conn
+
+
+def get_db_last_edited_times(conn) -> dict[str, str]:
+    """Return a mapping of page_id to last_edited string for all pages in DB."""
+    with conn.cursor() as cur:
+        cur.execute("SELECT to_regclass('public.documents');")
+        if not cur.fetchone()[0]:
+            return {}
+        cur.execute("SELECT id, last_edited FROM documents")
+        rows = cur.fetchall()
+        return {row[0]: str(row[1]) for row in rows}
 
 
 def upsert_document(conn, page: PageData) -> bool:
@@ -141,7 +153,7 @@ def init_schema(conn) -> None:
             );
         """)
 
-        cur.execute("""
+        cur.execute(f"""
             CREATE TABLE IF NOT EXISTS chunks (
                 chunk_id      TEXT PRIMARY KEY,
                 document_id   TEXT NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
@@ -149,7 +161,7 @@ def init_schema(conn) -> None:
                 heading_path  TEXT,
                 chunk_index   INTEGER NOT NULL,
                 token_count   INTEGER,
-                embedding     VECTOR(384),
+                embedding     VECTOR({EMBEDDING_DIMENSIONS}),
                 content_tsv   TSVECTOR
                               GENERATED ALWAYS AS (to_tsvector('english', content)) STORED,
                 created_at    TIMESTAMPTZ DEFAULT NOW()

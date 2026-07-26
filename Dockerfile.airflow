@@ -1,0 +1,15 @@
+FROM ghcr.io/astral-sh/uv:latest AS uv
+
+FROM apache/airflow:2.9.2-python3.12
+
+# Copy uv binary directly from official image
+COPY --from=uv /uv /uvx /home/airflow/.local/bin/
+
+# Copy project definition and lock file
+COPY pyproject.toml uv.lock ./
+
+# Run exactly uv sync as requested
+RUN uv sync
+
+# Add the .venv site-packages to PYTHONPATH so the system Airflow can import the synced dependencies
+ENV PYTHONPATH="/opt/airflow/.venv/lib/python3.12/site-packages:/opt/airflow"

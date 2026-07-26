@@ -4,3 +4,8 @@ __pycache__/
 *.pyc
 *.pyo
 .DS_Store
+
+# Data & Cache
+data/
+.fastembed_cache/
+logs/

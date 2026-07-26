@@ -1,22 +1,16 @@
 """
-Embedder — generates vector embeddings locally using sentence-transformers/all-MiniLM-L6-v2
-via fastembed (ONNX Runtime under the hood, no PyTorch required).
-
-Model specs:
-  - Size: ~22MB ONNX file (downloads on first run, cached afterwards)
-  - Output dimensions: 384
-  - CPU inference: very fast (~100ms for 128 texts)
-  - No GPU or CUDA required
-
 Model is loaded once at module import time and reused across all calls.
 """
 from fastembed import TextEmbedding
+from tqdm import tqdm
 
 from ingestion.chunker import Chunk
 from ingestion.config import EMBEDDING_MODEL, EMBEDDING_BATCH_SIZE
 
 # Load model once; fastembed downloads the ONNX file on first use (~22MB)
-_model = TextEmbedding(model_name=EMBEDDING_MODEL)
+import os
+CACHE_DIR = os.path.join(os.getcwd(), ".fastembed_cache")
+_model = TextEmbedding(model_name=EMBEDDING_MODEL, cache_dir=CACHE_DIR)
 
 
 def embed_chunks(chunks: list[Chunk]) -> list[list[float]]:
@@ -37,7 +31,7 @@ def embed_texts(texts: list[str]) -> list[list[float]]:
     print(f"[Embedder] Generating embeddings for {total} texts...")
 
     # fastembed.embed() returns a generator of numpy arrays
-    embeddings = list(_model.embed(texts, batch_size=EMBEDDING_BATCH_SIZE))
+    embeddings = list(tqdm(_model.embed(texts, batch_size=EMBEDDING_BATCH_SIZE), total=total, desc="Embedding texts", unit="chunk"))
     result = [emb.tolist() for emb in embeddings]
 
     print(f"[Embedder] Done — {len(result)} embeddings generated (dim={len(result[0]) if result else 0})")

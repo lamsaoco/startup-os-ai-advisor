@@ -34,11 +34,11 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 * **Environment & Package Management:** `uv` (Python 3.12+)
 * **Data Ingestion:** `notion-client` (Recursive hierarchical crawling)
 * **Vector & Relational Database:** PostgreSQL with `pgvector` extension
-* **Embedding Model:** Google Gemini `text-embedding-004` (via OpenAI-compatible SDK)
+* **Embedding Model:** Local ONNX Model (`sentence-transformers/paraphrase-multilingual-mpnet-base-v2`) via `fastembed`
 * **Retrieval Framework:** Native Python
 * **Search Strategy:** Hybrid Search (BM25 Full-text + Vector Embeddings) + Reciprocal Rank Fusion (RRF)
 * **Re-ranking:** Cross-Encoder (Hugging Face)
-* **LLM Generation:** Google Gemini `gemini-2.0-flash-lite` (via OpenAI SDK)
+* **LLM Generation:** Google Gemini `gemini-3.1-flash-lite` (via OpenAI SDK)
 * **User Interface:** Streamlit
 * **Monitoring & Observability:** Grafana (Dashboards connected to PostgreSQL)
 * **Deployment:** Docker Compose, AWS Cloud (AWS ECS / EC2)
@@ -60,18 +60,18 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - [x] Write `ingestion/notion_crawler.py` — recursive crawler with pagination & rate-limit retry.
 - [x] Implement **Recursive Crawling** — captures parent-child page relationships and breadcrumb.
 - [x] Write `ingestion/text_extractor.py` — converts Notion blocks to structured plain text.
-- [/] Write `ingestion/chunker.py` — heading-aware chunking with token-based size control.
-- [ ] Write `ingestion/embedder.py` — batch embedding via Gemini `text-embedding-004` (OpenAI SDK).
-- [ ] Write `ingestion/loader.py` — upsert chunks + embeddings into PostgreSQL.
-- [ ] Write `ingestion/run_ingestion.py` — orchestrate the full pipeline.
-- [ ] Run ingestion and verify chunks loaded correctly into PostgreSQL.
+- [x] Write `ingestion/chunker.py` — heading-aware chunking with token-based size control.
+- [x] Write `ingestion/embedder.py` — batch embedding via local ONNX model (`fastembed`).
+- [x] Write `ingestion/loader.py` — upsert chunks + embeddings into PostgreSQL.
+- [x] Write `ingestion/run_ingestion.py` — orchestrate the full pipeline.
+- [x] Run ingestion and verify chunks loaded correctly into PostgreSQL.
 
 ### Phase 3: Advanced Retrieval & Generation Pipeline
-- [ ] Implement **Query Rewriting** using `gemini-2.0-flash-lite` to expand synonyms.
+- [ ] Implement **Query Rewriting** using `gemini-3.1-flash-lite` to expand synonyms.
 - [ ] Implement **Hybrid Search**: pgvector cosine similarity + `to_tsvector` BM25.
 - [ ] Implement **Reciprocal Rank Fusion (RRF)** to merge vector and keyword results.
 - [ ] Implement **Document Re-ranking**: Cross-Encoder (Hugging Face) for Top-K reranking.
-- [ ] Build generation prompt and final response via `gemini-2.0-flash-lite` (OpenAI SDK).
+- [ ] Build generation prompt and final response via `gemini-3.1-flash-lite` (OpenAI SDK).
 
 ### Phase 4: System Evaluation (Retrieval & LLM)
 - [ ] Create a Ground Truth dataset (15-20 Q&A pairs with correct chunk IDs).

@@ -15,8 +15,8 @@ NOTION_ROOT_PAGE_ID: str = os.environ["NOTION_ROOT_PAGE_ID"]
 GEMINI_API_KEY: str = os.environ["GEMINI_API_KEY"]
 GEMINI_BASE_URL: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
 CHAT_MODEL: str = "gemini-3.1-flash-lite"   # Used for query rewriting & generation (via OpenAI SDK)
-EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"  # Local ONNX via fastembed (~22MB)
-EMBEDDING_DIMENSIONS: int = 384              # Output dimension of all-MiniLM-L6-v2
+EMBEDDING_MODEL: str = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"  # Local ONNX (~1GB)
+EMBEDDING_DIMENSIONS: int = 768              # Output dimension of mpnet
 
 # ── PostgreSQL ───────────────────────────────────────────────────────────────
 POSTGRES_HOST: str = os.getenv("POSTGRES_HOST", "localhost")
