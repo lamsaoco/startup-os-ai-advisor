@@ -33,12 +33,13 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 
 * **Environment & Package Management:** `uv` (Python 3.12+)
 * **Data Ingestion:** `notion-client` (Recursive hierarchical crawling)
+* **Orchestration:** Apache Airflow (DAG-based pipeline, runs in Docker)
 * **Vector & Relational Database:** PostgreSQL with `pgvector` extension
 * **Embedding Model:** Local ONNX Model (`sentence-transformers/paraphrase-multilingual-mpnet-base-v2`) via `fastembed`
 * **Retrieval Framework:** Native Python
 * **Search Strategy:** Hybrid Search (BM25 Full-text + Vector Embeddings) + Reciprocal Rank Fusion (RRF)
 * **Re-ranking:** Cross-Encoder (Hugging Face)
-* **LLM Generation:** Google Gemini `gemini-3.1-flash-lite` (via OpenAI SDK)
+* **LLM Generation:** Google Gemini `gemini-2.0-flash-lite` (via OpenAI SDK)
 * **User Interface:** Streamlit
 * **Monitoring & Observability:** Grafana (Dashboards connected to PostgreSQL)
 * **Deployment:** Docker Compose, AWS Cloud (AWS ECS / EC2)
@@ -51,11 +52,11 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - [x] Initialize project directory and Git repository.
 - [x] Setup Python environment using `uv` (`uv venv`, `uv add ...`).
 - [x] Add `.gitignore` and `.env.example`.
-- [ ] Create `docker-compose.yml` to spin up PostgreSQL (`pgvector`) and Grafana locally.
-- [ ] Initialize database schema (Tables: `documents`, `chunks`, `app_monitoring_logs`).
+- [x] Create `docker-compose.yml` to spin up PostgreSQL (`pgvector`), Grafana, pgAdmin, and Airflow.
+- [x] Initialize database schema (Tables: `documents`, `chunks`, `app_monitoring_logs`) — handled in `loader.py::init_schema()`.
 
 ### Phase 2: Hierarchical Data Ingestion
-- [ ] Duplicate "The Company Building Handbook" to personal Notion workspace.
+- [x] Duplicate "The Company Building Handbook" to personal Notion workspace.
 - [x] Create Notion Integration and obtain `NOTION_API_KEY`.
 - [x] Write `ingestion/notion_crawler.py` — recursive crawler with pagination & rate-limit retry.
 - [x] Implement **Recursive Crawling** — captures parent-child page relationships and breadcrumb.
@@ -63,8 +64,8 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - [x] Write `ingestion/chunker.py` — heading-aware chunking with token-based size control.
 - [x] Write `ingestion/embedder.py` — batch embedding via local ONNX model (`fastembed`).
 - [x] Write `ingestion/loader.py` — upsert chunks + embeddings into PostgreSQL.
-- [x] Write `ingestion/run_ingestion.py` — orchestrate the full pipeline.
-- [x] Run ingestion and verify chunks loaded correctly into PostgreSQL.
+- [x] Write Airflow DAGs: `dags/01_notion_extraction_dag.py` & `dags/02_notion_transform_load_dag.py`.
+- [ ] Trigger the Airflow DAG and verify chunks loaded correctly into PostgreSQL.
 
 ### Phase 3: Advanced Retrieval & Generation Pipeline
 - [ ] Implement **Query Rewriting** using `gemini-3.1-flash-lite` to expand synonyms.

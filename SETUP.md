@@ -1,121 +1,131 @@
-# 🚀 Hướng dẫn Setup Máy Ảo Mới — Startup OS AI Advisor
+# 🚀 Hướng dẫn Setup — Startup OS AI Advisor
 
 > Áp dụng cho: Ubuntu 22.04/24.04 mới toanh, chưa cài gì.
 
 ---
 
-## Bước 1 — Cài `uv` (Python Package Manager)
+## ⚠️ Những thứ KHÔNG được commit lên Git
 
-`uv` thay thế cho `pip` + `venv`, nhanh hơn nhiều và tự quản lý virtual env.
+Các file/thư mục dưới đây đã được liệt kê trong `.gitignore` và **tuyệt đối không push lên repository**:
+
+| File / Thư mục | Lý do |
+|---|---|
+| `.env` | Chứa API keys, credentials — bí mật tuyệt đối |
+| `data/` | Chứa file JSON tạm + ONNX model ~900MB |
+| `data/.model_cache/` | Model HuggingFace (~900MB, dùng Git LFS nếu cần) |
+| `data/bronze/` | File crawl tạm, tự xóa sau mỗi DAG run |
+| `.venv/` | Virtual environment Python (~200MB) |
+| `logs/` | Airflow task logs (auto-generated) |
+| `standalone_admin_password.txt` | Mật khẩu Airflow auto-generated |
+| `airflow.cfg` | Config Airflow runtime |
+| `airflow.db` | SQLite database của Airflow (dev only) |
+
+> **Quy tắc vàng:** Nếu file chứa credential, lớn hơn 1MB, hoặc auto-generated — đừng commit.
+
+---
+
+## Bước 1 — Cài `uv` (Python Package Manager)
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-Thêm vào PATH vĩnh viễn (để không bị "command not found" lần sau):
-
-```bash
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
-```
 
-Kiểm tra:
-
-```bash
+# Kiểm tra
 uv --version
-# uv 0.11.32 (x86_64-unknown-linux-gnu)
 ```
 
 ---
 
 ## Bước 2 — Cài `Docker` + `Docker Compose`
 
-Dùng script cài chính thức của Docker (cài cả Docker Engine lẫn Compose plugin):
-
 ```bash
 curl -fsSL https://get.docker.com | sudo sh
-```
-
-Thêm user vào group `docker` để chạy không cần `sudo`:
-
-```bash
 sudo usermod -aG docker $USER
-```
+newgrp docker   # Apply ngay không cần đăng xuất
 
-> ⚠️ **Quan trọng:** Phải **đăng xuất rồi đăng nhập lại** (hoặc mở terminal mới) để group có hiệu lực.  
-> Hoặc dùng lệnh sau để apply ngay trong session hiện tại:
-> ```bash
-> newgrp docker
-> ```
-
-Kiểm tra:
-
-```bash
+# Kiểm tra
 docker --version
-# Docker version 29.6.2, build dfc4efb
-
 docker compose version
-# Docker Compose version v5.3.1
 ```
 
-> ⚠️ **Lưu ý:** Dùng `docker compose` (có dấu cách), KHÔNG dùng `docker-compose` (gạch nối) — lệnh cũ đã bị deprecated.
+> ⚠️ Dùng `docker compose` (có dấu cách), KHÔNG dùng `docker-compose` (đã deprecated).
 
 ---
 
-## Bước 3 — Cài dependencies Python cho project
-
-Vào thư mục project và chạy `uv sync`:
+## Bước 3 — Cài Python dependencies
 
 ```bash
 cd ~/startup-os-ai-advisor
 uv sync
 ```
 
-Lệnh này sẽ:
-- Tạo virtual env tại `.venv/`
-- Cài tất cả 42 packages từ `uv.lock` (fastembed, psycopg2, notion-client, tiktoken, v.v.)
-
 ---
 
 ## Bước 4 — Tạo file `.env`
 
-Copy file mẫu và điền thông tin:
-
 ```bash
-cd ~/startup-os-ai-advisor
-nano .env
+cp .env.example .env
+nano .env   # hoặc dùng VS Code / bất kỳ editor nào
 ```
 
-Nội dung file `.env`:
+Điền đầy đủ các giá trị sau:
 
 ```env
 # Notion
 NOTION_API_KEY=ntn_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-NOTION_ROOT_PAGE_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+NOTION_ROOT_PAGE_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   # Lấy từ URL Notion page (32 hex chars)
 
 # Gemini
 GEMINI_API_KEY=AQ.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # PostgreSQL (giữ nguyên nếu dùng Docker local)
-POSTGRES_HOST=localhost
+POSTGRES_HOST=postgres   # Dùng "localhost" nếu chạy script ngoài Docker
 POSTGRES_PORT=5432
 POSTGRES_DB=startup_os
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
+
+# Airflow — QUAN TRỌNG: phải khớp UID của host user
+# Chạy `id -u` để lấy UID. Sai UID → lỗi "Permission denied" khi ghi file.
+AIRFLOW_UID=1000
+
+# Email alerts khi DAG fail (tuỳ chọn — bỏ trống để tắt)
+ALERT_EMAIL=your@gmail.com
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your@gmail.com
+SMTP_PASSWORD=xxxx xxxx xxxx xxxx   # Gmail App Password (không phải password Gmail thường)
+                                     # Lấy tại: https://myaccount.google.com/apppasswords
+```
+
+### Lấy `NOTION_ROOT_PAGE_ID`
+
+Mở trang gốc của Notion handbook → copy URL → lấy 32 ký tự hex ở cuối:
+```
+https://notion.so/The-Company-Building-Handbook-48f392a1a551836795f9010caa84da89
+                                                 ↑ đây là ROOT_PAGE_ID
 ```
 
 ---
 
-## Bước 5 — Khởi động PostgreSQL bằng Docker
+## Bước 5 — Tạo thư mục dữ liệu cần thiết
+
+Các thư mục này bị gitignore nên không có trong repo, cần tạo thủ công:
 
 ```bash
-cd ~/startup-os-ai-advisor
-docker compose up -d
+mkdir -p data/bronze
+mkdir -p data/.model_cache
 ```
 
-Kiểm tra các container đang chạy:
+---
+
+## Bước 6 — Khởi động Docker services
 
 ```bash
+docker compose up -d
+
+# Kiểm tra status
 docker compose ps
 ```
 
@@ -126,63 +136,60 @@ NAME                    STATUS          PORTS
 startup_os_postgres     Up (healthy)    0.0.0.0:5432->5432/tcp
 startup_os_pgadmin      Up              0.0.0.0:5050->80/tcp
 startup_os_grafana      Up              0.0.0.0:3000->3000/tcp
+startup_os_airflow      Up              0.0.0.0:8080->8080/tcp
 ```
 
-Chờ PostgreSQL healthy (khoảng 10-20 giây):
-
-```bash
-docker compose logs postgres --tail=5
-```
+> ⏳ Airflow cần ~60 giây để khởi động lần đầu (build DB, tạo admin user).
 
 ---
 
-## Bước 6 — Chạy Ingestion Pipeline
+## Bước 7 — Trigger ingestion pipeline
 
-```bash
-# Chạy toàn bộ (ingest tất cả Notion pages)
-uv run python -m ingestion.run_ingestion
+Mở Airflow UI tại **http://localhost:8080** (admin / admin):
 
-# Chạy thử với 5 pages đầu tiên (để test nhanh)
-uv run python -m ingestion.run_ingestion --limit 5
-```
+1. Vào tab **DAGs**
+2. Enable DAG `01_notion_extraction`
+3. Nhấn **▶ Trigger DAG**
+4. Chờ DAG 01 chạy xong → tự động trigger DAG 02
+5. DAG 02 sẽ download ONNX model (~900MB, lần đầu mất 5–10 phút) → embed và load vào PostgreSQL
+
+> ℹ️ Model chỉ download **một lần** và được cache tại `data/.model_cache/`. Lần chạy tiếp theo sẽ dùng cache offline.
 
 ---
 
-## 🗺️ Tóm tắt nhanh (copy-paste all-in-one)
+## 🌐 URLs sau khi khởi động
+
+| Service    | URL                      | Login                   |
+|------------|--------------------------|-------------------------|
+| Airflow UI | http://localhost:8080    | admin / admin           |
+| pgAdmin    | http://localhost:5050    | admin@admin.com / admin |
+| Grafana    | http://localhost:3000    | admin / admin           |
+| PostgreSQL | localhost:5432           | postgres / postgres     |
+
+---
+
+## 🗺️ Quick start (copy-paste all-in-one)
 
 ```bash
-# 1. Cài uv
+# 1. Cài tools
 curl -LsSf https://astral.sh/uv/install.sh | sh
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc
+curl -fsSL https://get.docker.com | sudo sh && sudo usermod -aG docker $USER && newgrp docker
 
-# 2. Cài Docker
-curl -fsSL https://get.docker.com | sudo sh
-sudo usermod -aG docker $USER
-newgrp docker
-
-# 3. Cài Python dependencies
+# 2. Clone và setup project
 cd ~/startup-os-ai-advisor
 uv sync
 
-# 4. Tạo .env (điền API keys)
-nano .env
+# 3. Cấu hình
+cp .env.example .env
+nano .env   # ← điền NOTION_API_KEY, NOTION_ROOT_PAGE_ID, GEMINI_API_KEY, AIRFLOW_UID=$(id -u)
 
-# 5. Khởi động database
+# 4. Tạo thư mục dữ liệu
+mkdir -p data/bronze data/.model_cache
+
+# 5. Khởi động
 docker compose up -d
-
-# 6. Chạy pipeline
-uv run python -m ingestion.run_ingestion --limit 5
 ```
-
----
-
-## 🌐 Các URL sau khi khởi động
-
-| Service     | URL                         | Login                   |
-|-------------|------------------------------|-------------------------|
-| pgAdmin     | http://localhost:5050        | admin@admin.com / admin |
-| Grafana     | http://localhost:3000        | admin / admin           |
-| PostgreSQL  | localhost:5432               | postgres / postgres     |
 
 ---
 
@@ -191,7 +198,10 @@ uv run python -m ingestion.run_ingestion --limit 5
 | Lỗi | Nguyên nhân | Cách sửa |
 |-----|-------------|----------|
 | `uv: command not found` | PATH chưa load | `source ~/.bashrc` |
-| `docker-compose: command not found` | Dùng lệnh cũ | Dùng `docker compose` (có dấu cách) |
-| `permission denied` khi chạy docker | Chưa apply group hoặc quyền socket | `newgrp docker` hoặc `sudo chmod 666 /var/run/docker.sock` |
-| `Connection refused` port 5432 | PostgreSQL chưa chạy | `docker compose up -d` |
-| `uv sync` lỗi | Không có `pyproject.toml` | Đảm bảo đang ở đúng thư mục project |
+| `docker: command not found` | Chưa cài hoặc group chưa apply | `newgrp docker` |
+| `Permission denied` ghi file trong Airflow | `AIRFLOW_UID` sai | Đặt `AIRFLOW_UID=$(id -u)` trong `.env` |
+| `Permission denied` download model | `HF_HOME` hoặc `data/.model_cache` chưa writable | `mkdir -p data/.model_cache` |
+| `Broken DAG` do import lỗi | Module không tìm thấy trong container | Kiểm tra `PYTHONPATH` trong `docker-compose.yml` |
+| `Connection refused` port 5432 | PostgreSQL chưa healthy | `docker compose logs postgres --tail=20` |
+| `SMTPAuthenticationError` | Gmail không chấp nhận password thường | Tạo App Password tại myaccount.google.com/apppasswords |
+| DAG 02 không nhận file bronze | XCom không pass đúng path | Đảm bảo đang dùng version DAG mới (PythonOperator trigger) |

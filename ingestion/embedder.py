@@ -7,9 +7,12 @@ from tqdm import tqdm
 from ingestion.chunker import Chunk
 from ingestion.config import EMBEDDING_MODEL, EMBEDDING_BATCH_SIZE
 
-# Load model once; fastembed downloads the ONNX file on first use (~22MB)
+# Load model once; fastembed downloads the ONNX file on first use (~900MB)
+# Cache is stored in the mounted ./data volume so it persists across container restarts.
+# HF_HOME must also point here (set in docker-compose) so huggingface_hub
+# internal temp files don't end up in ~/.cache which may be unwritable.
 import os
-CACHE_DIR = os.path.join(os.getcwd(), ".fastembed_cache")
+CACHE_DIR = os.getenv("FASTEMBED_CACHE_DIR", "/opt/airflow/data/.model_cache")
 _model = TextEmbedding(model_name=EMBEDDING_MODEL, cache_dir=CACHE_DIR)
 
 

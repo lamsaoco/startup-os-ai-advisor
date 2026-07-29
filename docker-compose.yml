@@ -55,11 +55,17 @@ services:
       dockerfile: Dockerfile.airflow
     container_name: startup_os_airflow
     restart: always
+    # Run as the same UID as the host user to avoid volume permission errors.
+    # Set AIRFLOW_UID=1000 in .env (match `id -u` on your host).
+    user: "${AIRFLOW_UID:-50000}:0"
     environment:
       - PYTHONPATH=/opt/airflow/.venv/lib/python3.12/site-packages:/opt/airflow
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres/startup_os
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      # Model cache — keep inside mounted volume so it persists across container restarts
+      - HF_HOME=/opt/airflow/data/.model_cache
+      - FASTEMBED_CACHE_DIR=/opt/airflow/data/.model_cache
       - AIRFLOW__SMTP__SMTP_HOST=${SMTP_HOST}
       - AIRFLOW__SMTP__SMTP_STARTTLS=True
       - AIRFLOW__SMTP__SMTP_SSL=False
