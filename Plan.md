@@ -65,14 +65,14 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - [x] Write `ingestion/embedder.py` — batch embedding via local ONNX model (`fastembed`).
 - [x] Write `ingestion/loader.py` — upsert chunks + embeddings into PostgreSQL.
 - [x] Write Airflow DAGs: `dags/01_notion_extraction_dag.py` & `dags/02_notion_transform_load_dag.py`.
-- [ ] Trigger the Airflow DAG and verify chunks loaded correctly into PostgreSQL.
+- [x] Trigger the Airflow DAG and verify chunks loaded correctly into PostgreSQL.
 
 ### Phase 3: Advanced Retrieval & Generation Pipeline
-- [ ] Implement **Query Rewriting** using `gemini-3.1-flash-lite` to expand synonyms.
-- [ ] Implement **Hybrid Search**: pgvector cosine similarity + `to_tsvector` BM25.
-- [ ] Implement **Reciprocal Rank Fusion (RRF)** to merge vector and keyword results.
-- [ ] Implement **Document Re-ranking**: Cross-Encoder (Hugging Face) for Top-K reranking.
-- [ ] Build generation prompt and final response via `gemini-3.1-flash-lite` (OpenAI SDK).
+- [x] Implement **Query Rewriting** using `gemini-3.1-flash-lite` to expand synonyms.
+- [x] Implement **Hybrid Search**: pgvector cosine similarity + `to_tsvector` BM25.
+- [x] Implement **Reciprocal Rank Fusion (RRF)** to merge vector and keyword results.
+- [x] Implement **Document Re-ranking**: Cross-Encoder (Hugging Face) for Top-K reranking.
+- [x] Build generation prompt and final response via `gemini-3.1-flash-lite` (OpenAI SDK).
 
 ### Phase 4: System Evaluation (Retrieval & LLM)
 - [ ] Create a Ground Truth dataset (15-20 Q&A pairs with correct chunk IDs).

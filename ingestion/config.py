@@ -17,6 +17,7 @@ GEMINI_BASE_URL: str = "https://generativelanguage.googleapis.com/v1beta/openai/
 CHAT_MODEL: str = "gemini-3.1-flash-lite"   # Used for query rewriting & generation (via OpenAI SDK)
 EMBEDDING_MODEL: str = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"  # Local ONNX (~1GB)
 EMBEDDING_DIMENSIONS: int = 768              # Output dimension of mpnet
+CROSS_ENCODER_MODEL: str = "BAAI/bge-reranker-base" # Local ONNX for reranking
 
 # ── PostgreSQL ───────────────────────────────────────────────────────────────
 POSTGRES_HOST: str = os.getenv("POSTGRES_HOST", "localhost")
@@ -31,3 +32,7 @@ CHUNK_MIN_TOKENS: int = 50   # Merge with next chunk if smaller than this
 
 # ── Embedding batch ──────────────────────────────────────────────────────────
 EMBEDDING_BATCH_SIZE: int = 128  # Chunks per local model batch (MiniLM is fast on CPU)
+
+# ── Retrieval & Reranking ────────────────────────────────────────────────────
+RETRIEVAL_TOP_K: int = 20        # Number of chunks to retrieve from DB via Hybrid Search
+RERANK_TOP_K: int = 5            # Number of chunks to keep after Cross-Encoder Reranking

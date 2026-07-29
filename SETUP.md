@@ -202,6 +202,7 @@ docker compose up -d
 | `Permission denied` ghi file trong Airflow | `AIRFLOW_UID` sai | Đặt `AIRFLOW_UID=$(id -u)` trong `.env` |
 | `Permission denied` download model | `HF_HOME` hoặc `data/.model_cache` chưa writable | `mkdir -p data/.model_cache` |
 | `Broken DAG` do import lỗi | Module không tìm thấy trong container | Kiểm tra `PYTHONPATH` trong `docker-compose.yml` |
-| `Connection refused` port 5432 | PostgreSQL chưa healthy | `docker compose logs postgres --tail=20` |
+| `Connection refused` port 5432 từ Airflow DAG | `POSTGRES_HOST=localhost` — trong Docker container, localhost là chính container đó | Đổi thành `POSTGRES_HOST=postgres` trong `.env` |
+| `Connection refused` port 5432 khi chạy script local | PostgreSQL chưa chạy hoặc dùng `POSTGRES_HOST=postgres` | `docker compose up -d` và đổi `POSTGRES_HOST=localhost` |
 | `SMTPAuthenticationError` | Gmail không chấp nhận password thường | Tạo App Password tại myaccount.google.com/apppasswords |
 | DAG 02 không nhận file bronze | XCom không pass đúng path | Đảm bảo đang dùng version DAG mới (PythonOperator trigger) |
