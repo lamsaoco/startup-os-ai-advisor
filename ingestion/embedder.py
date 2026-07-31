@@ -12,7 +12,11 @@ from ingestion.config import EMBEDDING_MODEL, EMBEDDING_BATCH_SIZE
 # HF_HOME must also point here (set in docker-compose) so huggingface_hub
 # internal temp files don't end up in ~/.cache which may be unwritable.
 import os
-CACHE_DIR = os.getenv("FASTEMBED_CACHE_DIR", "/opt/airflow/data/.model_cache")
+
+# Fallback to local project data dir when running outside Docker.
+# Docker containers should set FASTEMBED_CACHE_DIR via docker-compose env.
+_project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CACHE_DIR = os.getenv("FASTEMBED_CACHE_DIR", os.path.join(_project_root, "data", ".model_cache"))
 _model = TextEmbedding(model_name=EMBEDDING_MODEL, cache_dir=CACHE_DIR)
 
 

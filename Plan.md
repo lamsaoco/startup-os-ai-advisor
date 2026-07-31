@@ -75,10 +75,10 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - [x] Build generation prompt and final response via `gemini-3.1-flash-lite` (OpenAI SDK).
 
 ### Phase 4: System Evaluation (Retrieval & LLM)
-- [ ] Create a Ground Truth dataset (15-20 Q&A pairs with correct chunk IDs).
-- [ ] Evaluate Retrieval: **Hit Rate@K** and **MRR** — Vector vs. Hybrid vs. Hybrid+Reranker.
-- [ ] Evaluate LLM: Gemini-as-a-judge scoring Faithfulness and Answer Relevance.
-- [ ] Document evaluation results in `README.md`.
+- [x] Create a Ground Truth dataset — Synthetic QA Generation (100 chunks × 3 Q = 300 pairs).
+- [x] Evaluate Retrieval: **Hit Rate@K** and **MRR** — Vector vs. Hybrid vs. Hybrid+Reranker.
+- [x] Evaluate LLM: Gemini-as-a-judge scoring Faithfulness and Answer Relevance.
+- [x] Document evaluation results in `README.md`.
 
 ### Phase 5: Streamlit Interface & Feedback Logging
 - [ ] Build a Streamlit chat interface.
