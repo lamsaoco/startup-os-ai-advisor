@@ -84,6 +84,8 @@ services:
       - ./data:/opt/airflow/data
       - ./.env:/opt/airflow/.env
       - ./ingestion:/opt/airflow/ingestion
+      - ./evaluation:/opt/airflow/evaluation
+      - ./retrieval:/opt/airflow/retrieval
     command: standalone
     depends_on:
       postgres:
