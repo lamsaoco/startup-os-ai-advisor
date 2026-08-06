@@ -35,7 +35,7 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 * **Data Ingestion:** `notion-client` (Recursive hierarchical crawling)
 * **Orchestration:** Apache Airflow (DAG-based pipeline, runs in Docker)
 * **Vector & Relational Database:** PostgreSQL with `pgvector` extension
-* **Embedding Model:** Local ONNX Model (`sentence-transformers/paraphrase-multilingual-mpnet-base-v2`) via `fastembed`
+* **Embedding Model:** Local ONNX Model (`BAAI/bge-large-en-v1.5`, dim 1024, MTEB ~54.3) via `fastembed`
 * **Retrieval Framework:** Native Python
 * **Search Strategy:** Hybrid Search (BM25 Full-text + Vector Embeddings) + Reciprocal Rank Fusion (RRF)
 * **Re-ranking:** Cross-Encoder (Hugging Face)
@@ -79,6 +79,18 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - [x] Evaluate Retrieval: **Hit Rate@K** and **MRR** — Vector vs. Hybrid vs. Hybrid+Reranker.
 - [x] Evaluate LLM: Gemini-as-a-judge scoring Faithfulness and Answer Relevance.
 - [x] Document evaluation results in `README.md`.
+
+### Phase 4.5: Retrieval Optimization (Root-cause fixes from evaluation)
+- [x] Identify root causes of low Hit Rate (21.3%) — chunking, model, missing context.
+- [x] Switch embedding model: `mpnet-768d` → `BAAI/bge-large-en-v1.5` (1024d, MTEB ~54.3).
+- [x] Add `embed_text` field to `Chunk`: contextual prefix `[Document: X | Path: Y]` + content used for embedding only; raw `content` kept separate for display.
+- [x] Add sliding window overlap (`CHUNK_OVERLAP_TOKENS=64`) between paragraph sub-chunks.
+- [x] Increase `CHUNK_MAX_TOKENS`: 450 → 512.
+- [x] Fix numbered list rendering (`1. 1. 1.` → `1. 2. 3.`).
+- [x] Increase `RETRIEVAL_TOP_K`: 20 → 40; `RERANK_TOP_K`: 5 → 10.
+- [x] Create `ingestion/migrate_schema.py` to DROP+recreate chunks table (dim change).
+- [x] Document known issues & optimization roadmap in `README.md`.
+- [ ] Run migration + re-ingest + re-evaluate to measure improvement.
 
 ### Phase 5: Streamlit Interface & Feedback Logging
 - [ ] Build a Streamlit chat interface.

@@ -15,8 +15,8 @@ NOTION_ROOT_PAGE_ID: str = os.environ["NOTION_ROOT_PAGE_ID"]
 GEMINI_API_KEY: str = os.environ["GEMINI_API_KEY"]
 GEMINI_BASE_URL: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
 CHAT_MODEL: str = "gemini-3.1-flash-lite"   # Used for query rewriting & generation (via OpenAI SDK)
-EMBEDDING_MODEL: str = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"  # Local ONNX (~1GB)
-EMBEDDING_DIMENSIONS: int = 768              # Output dimension of mpnet
+EMBEDDING_MODEL: str = "BAAI/bge-large-en-v1.5"    # Local ONNX via fastembed (~1.3GB, best English MTEB ~54.3)
+EMBEDDING_DIMENSIONS: int = 1024             # Output dimension of bge-large-en-v1.5
 CROSS_ENCODER_MODEL: str = "BAAI/bge-reranker-base" # Local ONNX for reranking
 
 # ── PostgreSQL ───────────────────────────────────────────────────────────────
@@ -27,12 +27,13 @@ POSTGRES_USER: str = os.getenv("POSTGRES_USER", "postgres")
 POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "postgres")
 
 # ── Chunking ─────────────────────────────────────────────────────────────────
-CHUNK_MAX_TOKENS: int = 450  # Split further if a section exceeds this limit
-CHUNK_MIN_TOKENS: int = 50   # Merge with next chunk if smaller than this
+CHUNK_MAX_TOKENS: int = 512   # Split further if a section exceeds this limit
+CHUNK_MIN_TOKENS: int = 50    # Merge with next chunk if smaller than this
+CHUNK_OVERLAP_TOKENS: int = 64 # Token overlap between consecutive paragraph sub-chunks
 
 # ── Embedding batch ──────────────────────────────────────────────────────────
 EMBEDDING_BATCH_SIZE: int = 128  # Chunks per local model batch (MiniLM is fast on CPU)
 
 # ── Retrieval & Reranking ────────────────────────────────────────────────────
-RETRIEVAL_TOP_K: int = 20        # Number of chunks to retrieve from DB via Hybrid Search
-RERANK_TOP_K: int = 5            # Number of chunks to keep after Cross-Encoder Reranking
+RETRIEVAL_TOP_K: int = 40        # Number of chunks to retrieve from DB via Hybrid Search
+RERANK_TOP_K: int = 10           # Number of chunks to keep after Cross-Encoder Reranking

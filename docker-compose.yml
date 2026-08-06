@@ -4,13 +4,14 @@ services:
     image: pgvector/pgvector:pg16
     container_name: startup_os_postgres
     environment:
-      POSTGRES_DB: startup_os
+      POSTGRES_DB: startup_os          # default DB for our app
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d  # auto-create airflow_db on fresh start
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d startup_os"]
       interval: 10s
@@ -61,7 +62,7 @@ services:
     environment:
       - PYTHONPATH=/opt/airflow/.venv/lib/python3.12/site-packages:/opt/airflow
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres/startup_os
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres/airflow_db
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       # Model cache — keep inside mounted volume so it persists across container restarts
       - HF_HOME=/opt/airflow/data/.model_cache

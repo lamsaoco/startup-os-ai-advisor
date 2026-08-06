@@ -136,7 +136,11 @@ def generate_questions_for_chunk(
     Returns:
         List of question strings, or None if generation fails.
     """
-    user_message = f"Handbook excerpt:\n\n{chunk['content']}"
+    user_message = (
+        f"Handbook excerpt:\n"
+        f"Context (Breadcrumb): {chunk['breadcrumb']}\n"
+        f"Content:\n{chunk['content']}"
+    )
 
     def _call() -> str:
         response = llm_client.chat.completions.create(

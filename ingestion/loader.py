@@ -111,6 +111,7 @@ def insert_chunks(conn, chunks: list[Chunk], embeddings: list[list[float]]) -> N
             chunk.chunk_id,
             chunk.document_id,
             chunk.content,
+            chunk.embed_text,
             chunk.heading_path,
             chunk.chunk_index,
             chunk.token_count,
@@ -124,7 +125,7 @@ def insert_chunks(conn, chunks: list[Chunk], embeddings: list[list[float]]) -> N
             cur,
             """
             INSERT INTO chunks
-                (chunk_id, document_id, content, heading_path,
+                (chunk_id, document_id, content, embed_text, heading_path,
                  chunk_index, token_count, embedding)
             VALUES %s
             """,
@@ -158,6 +159,7 @@ def init_schema(conn) -> None:
                 chunk_id      TEXT PRIMARY KEY,
                 document_id   TEXT NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
                 content       TEXT NOT NULL,
+                embed_text    TEXT,           -- contextual text used for embedding (breadcrumb + content)
                 heading_path  TEXT,
                 chunk_index   INTEGER NOT NULL,
                 token_count   INTEGER,

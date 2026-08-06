@@ -23,9 +23,11 @@ _model = TextEmbedding(model_name=EMBEDDING_MODEL, cache_dir=CACHE_DIR)
 def embed_chunks(chunks: list[Chunk]) -> list[list[float]]:
     """
     Generate embeddings for a list of Chunk objects.
+    Uses chunk.embed_text (breadcrumb + heading_path + content) so the
+    vector index captures full document hierarchy, not just bare text.
     Returns a list of float vectors in the same order as the input chunks.
     """
-    texts = [chunk.content for chunk in chunks]
+    texts = [chunk.embed_text for chunk in chunks]
     return embed_texts(texts)
 
 
