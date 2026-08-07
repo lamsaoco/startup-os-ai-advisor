@@ -1,320 +1,49 @@
 {
-  "timestamp": "2026-08-04 05:57:20",
+  "timestamp": "2026-08-07 04:36:17",
   "ground_truth_size": 300,
   "retrieval_evaluation": {
     "vector_only": {
       "n_questions": 300,
-      "n_found": 58,
-      "hit_rate@1": 0.12666666666666668,
-      "hit_rate@3": 0.17,
-      "hit_rate@5": 0.18,
-      "hit_rate@10": 0.19,
-      "mrr@1": 0.12666666666666668,
-      "mrr@3": 0.14666666666666667,
-      "mrr@5": 0.14900000000000002,
-      "mrr@10": 0.1505873015873016
+      "n_found": 282,
+      "hit_rate@1": 0.5833333333333334,
+      "hit_rate@3": 0.7233333333333334,
+      "hit_rate@5": 0.7933333333333333,
+      "hit_rate@10": 0.86,
+      "mrr@1": 0.5833333333333334,
+      "mrr@3": 0.6472222222222221,
+      "mrr@5": 0.6630555555555555,
+      "mrr@10": 0.6720846560846561
     },
     "hybrid": {
       "n_questions": 300,
-      "n_found": 64,
-      "hit_rate@1": 0.13666666666666666,
-      "hit_rate@3": 0.19,
-      "hit_rate@5": 0.2,
-      "hit_rate@10": 0.21,
-      "mrr@1": 0.13666666666666666,
-      "mrr@3": 0.16111111111111112,
-      "mrr@5": 0.16344444444444445,
-      "mrr@10": 0.16503174603174603
+      "n_found": 282,
+      "hit_rate@1": 0.5833333333333334,
+      "hit_rate@3": 0.7266666666666667,
+      "hit_rate@5": 0.7933333333333333,
+      "hit_rate@10": 0.86,
+      "mrr@1": 0.5833333333333334,
+      "mrr@3": 0.6494444444444445,
+      "mrr@5": 0.664611111111111,
+      "mrr@10": 0.673441798941799
     },
     "hybrid_reranker": {
       "n_questions": 300,
-      "n_found": 64,
-      "hit_rate@1": 0.19666666666666666,
-      "hit_rate@3": 0.21,
-      "hit_rate@5": 0.21333333333333335,
-      "hit_rate@10": 0.21333333333333335,
-      "mrr@1": 0.19666666666666666,
-      "mrr@3": 0.20277777777777778,
-      "mrr@5": 0.20361111111111113,
-      "mrr@10": 0.20361111111111113
+      "n_found": 272,
+      "hit_rate@1": 0.68,
+      "hit_rate@3": 0.8166666666666667,
+      "hit_rate@5": 0.8666666666666667,
+      "hit_rate@10": 0.9066666666666666,
+      "mrr@1": 0.68,
+      "mrr@3": 0.745,
+      "mrr@5": 0.756,
+      "mrr@10": 0.7614417989417989
     }
   },
   "llm_evaluation": {
-    "n_evaluated": 30,
+    "n_evaluated": 0,
     "n_skipped": 0,
-    "avg_faithfulness": 5.0,
-    "avg_relevance": 5.0
+    "avg_faithfulness": 0.0,
+    "avg_relevance": 0.0
   },
-  "llm_evaluation_details": [
-    {
-      "question": "What specific information must be included when filling out the airtable profile form?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain any information regarding an Airtable profile form, so the model correctly identified that the answer is missing.",
-      "source_chunk_id": "74c5aae0-c742-4ed9-b4da-f8fa358fae0a",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Enspiral Handbook > Guides > How to get your face on enspiral.com"
-    },
-    {
-      "question": "What are the specific individual responsibilities for employees regarding product work and communication?",
-      "answer": "Based on the provided handbook, the individual responsibilities for employees regarding product work and communication are as follows:\n\n*   **Direct Contribution:** Employees are responsible for making personal contributions to product work, which includes programming, design, Ops, and customer happiness [The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Managers > Individual Responsibilities].\n*   **Cycle Execution:** Employees are responsible for interpreting their daily work based on the cycle strategy devised by their Manager [The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Managers > Individual Responsibilities].\n*   **Status Reporting:** Employees must contribute to heartbeats and kick-offs, as well as provide status updates in between these events as needed [The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Managers > Individual Responsibilities].\n*   **Communication and Advocacy:** Employees are responsible for self-promotion and self-advocacy to their Managers, as well as communicating feedback to Managers regarding overall team or company direction and morale [The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Managers > Individual Responsibilities].",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately extracts the specific responsibilities listed in the provided context for individual employees regarding product work and communication.",
-      "source_chunk_id": "76e8c320-4366-41a1-8050-c8470d7e5f80",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Managers"
-    },
-    {
-      "question": "How should a current Blendle employee sign up for a membership at deworkout.nl to ensure they receive the discount?",
-      "answer": "To sign up for a membership at deworkout.nl with the employee discount, follow these steps:\n\n*   **Direct Sign-up:** You must sign up directly through the deworkout.nl website [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Perks and benefits > Fitness subscription with discount > deworkout.nl].\n*   **Use Company Email:** Use your official Blendle email address during the registration process [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Perks and benefits > Fitness subscription with discount > deworkout.nl].\n*   **Request Discount:** Explicitly ask for the discount when signing up [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Perks and benefits > Fitness subscription with discount > deworkout.nl].",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately reflects the instructions provided in the context for signing up for the discount.",
-      "source_chunk_id": "05d7b5b7-a44e-4a71-8401-ddbeba92e3c3",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Perks and benefits > Fitness subscription with discount"
-    },
-    {
-      "question": "If a customer provides feedback on a product, how should the business respond to that information?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding how a business should respond to customer feedback, so the model correctly identified that the answer is missing.",
-      "source_chunk_id": "b0cbdb50-9a72-4b0d-b5bd-36b4953b99b7",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > The Nylas Handbook > Nylas 7 Core Values"
-    },
-    {
-      "question": "What are the specific requirements and ethical guidelines for handling candidate data when sourcing?",
-      "answer": "Based on the provided handbook, the requirements and ethical guidelines for handling candidate data when sourcing are as follows:\n\n### **Ethical Guidelines**\n*   **Publicly Available Data Only:** You must only use candidate information that is publicly available [Blendle's Employee Handbook -> 3. Sourcing].\n*   **Transparency:** When reaching out to candidates, you must explicitly mention where you found them and how you obtained their contact information [Blendle's Employee Handbook -> 3. Sourcing].\n*   **Legitimate Interest:** You must rely on \"legit interest\" when initiating contact [Blendle's Employee Handbook -> 3. Sourcing].\n*   **Data Deletion:** You must delete all candidate data if the individual is unresponsive or expresses that they are not interested [Blendle's Employee Handbook -> 3. Sourcing].\n\n### **Operational Requirements**\n*   **Prior Review:** Candidates should only be sourced after the hiring team has reviewed the profile to ensure the outreach is a serious invitation [Blendle's Employee Handbook -> 3. Sourcing].\n*   **Tracking:** Use designated tools to keep track of individuals you are approaching. For technical roles, use the team's GitHub project board; for other roles, use Excel or Homerun [Blendle's Employee Handbook -> 3. Sourcing].\n*   **Documentation:** If using Excel, maintain a \"hitlist\" with the following columns: Name, Title, Company, Profile link, Rating, Action/Status, and Notes [Blendle's Employee Handbook -> 3. Sourcing].",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately extracts the specific ethical and operational guidelines for sourcing candidate data as outlined in the provided text.",
-      "source_chunk_id": "2cc73954-7311-461a-9ca3-33bb08782342",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Getting people in (branding&sourcing)"
-    },
-    {
-      "question": "If I am available for 40 hours per week, how can I be certain that there will be enough tasks assigned to me?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding task assignment or workload guarantees, so the model correctly identified that the answer is not available.",
-      "source_chunk_id": "0382b518-2737-4bab-9e31-bd732278d09a",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > HackerBay Employee Handbook > FAQ for interview applicants"
-    },
-    {
-      "question": "What notification and coordination steps must an employee take when planning a remote work trip lasting between two and four days within three timezones?",
-      "answer": "To plan a remote work trip, you must follow the notification and coordination procedures outlined in the Clef (now Rublon) Handbook. You are required to provide at least 7 days' notice to ensure the team can plan meetings and work accordingly [The Company Building Handbook > Onboarding / Employee Handbooks > Clef (now Rublon) Handbook > Working Remotely > Give the team heads up].\n\n### Required Notification and Coordination Steps:\n*   **Public Notification:** Post in the `#office` Slack channel using a `@channel` tag to ensure all team members are notified [The Company Building Handbook > Onboarding / Employee Handbooks > Clef (now Rublon) Handbook > Working Remotely > Give the team heads up].\n*   **Direct Coordination:** Communicate verbally with the colleagues you work with most closely [The Company Building Handbook > Onboarding / Employee Handbooks > Clef (now Rublon) Handbook > Working Remotely > Give the team heads up].\n*   **Calendar Management:** Update your calendar to clearly mark the specific days you will be working remotely [The Company Building Handbook > Onboarding / Employee Handbooks > Clef (now Rublon) Handbook > Working Remotely > Give the team heads up].",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately extracts the required notification steps from the provided context and correctly identifies that the specific trip duration or timezone constraints do not alter these general remote work procedures.",
-      "source_chunk_id": "a33371fa-37f5-4f31-979a-9a44fff25967",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > The Nylas Handbook > Remote Work"
-    },
-    {
-      "question": "What is the name of the tool used to assess both technical skills and cultural fit during interviews?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information about a tool used to assess technical skills and cultural fit, so the model correctly identified that the answer is missing.",
-      "source_chunk_id": "9471ceea-0c59-4901-948f-c06ff8a3dfcb",
-      "source_breadcrumb": "The Company Building Handbook > Recruiting > Interviews"
-    },
-    {
-      "question": "How should an employee report their mileage at the end of the month to receive reimbursement for car travel?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context contains a section on travel but lacks any specific instructions regarding mileage reporting, so the model correctly identified that the information is missing.",
-      "source_chunk_id": "05e12f0d-08a9-420f-a6a4-d3b33641b7e5",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Travel costs and reimbursements"
-    },
-    {
-      "question": "What is the primary benefit of using a group for email addresses at Enspiral?",
-      "answer": "I cannot find the answer in the handbook. \n\nThe handbook states that everyone at Enspiral is entitled to an Enspiral email address if they need one to \"represent Enspiral to clients or the public,\" and notes that email is \"great for one-on-one or small group correspondence, or one-way announcements\" [Enspiral Communications Guide -> Channels and Tools]. However, it does not specify a primary benefit for using a \"group\" for email addresses.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The model correctly identified that the provided context does not contain information regarding the benefits of using a group for email addresses, while accurately summarizing the information that is present.",
-      "source_chunk_id": "181b7fdd-79e4-4d9c-9685-3d5301a8fa4f",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Enspiral Handbook > Guides > Email accounts guide"
-    },
-    {
-      "question": "What are the potential consequences for employees who do not adhere to the guidelines regarding drug and alcohol consumption?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding drug and alcohol consumption policies, so the model correctly identified that the answer is not available.",
-      "source_chunk_id": "1cbf7395-b707-4d4e-8127-e00a9c302b52",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Clef (now Rublon) Handbook > Drug and Alcohol Policy"
-    },
-    {
-      "question": "What is the primary objective of the company's drug and alcohol policy?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding a drug and alcohol policy, so the model correctly identified that the answer is unavailable.",
-      "source_chunk_id": "1cbf7395-b707-4d4e-8127-e00a9c302b52",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Clef (now Rublon) Handbook > Drug and Alcohol Policy"
-    },
-    {
-      "question": "If a scheduled payday falls on a Saturday, when should an employee expect their direct deposit to arrive?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding direct deposit schedules for employees, so the model correctly identified that the answer is not available.",
-      "source_chunk_id": "bcaa3edb-592a-46fc-b303-79e9063e76c2",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Sparksuite Employee Handbook > Payroll Information"
-    },
-    {
-      "question": "How long can the migration and relocation procedure take for new hires?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding migration or relocation procedures for new hires, so the model correctly identified that the answer is unavailable.",
-      "source_chunk_id": "5afb37fc-2fff-43df-8ef6-ebf04721f7d3",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Highly Skilled Migrants and relocation"
-    },
-    {
-      "question": "How should a founder proceed if they receive a report regarding harassment or gross misconduct by another founder?",
-      "answer": "I cannot find the answer in the handbook. \n\nThe provided documentation outlines disciplinary measures for sexual harassment and assault specifically for employees at Blendle [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Blendle Social Code > Sexual harassment > Disciplinary measures], but it does not provide a specific protocol for handling reports of misconduct involving founders.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The model correctly identified that the provided context does not contain information regarding the specific protocol for handling reports of misconduct against a founder.",
-      "source_chunk_id": "e77b1f63-2844-4dc2-8b45-95eec86114d7",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Clef (now Rublon) Handbook > Complaint Policy"
-    },
-    {
-      "question": "What are the specific financial administration responsibilities regarding Xero and bank accounts?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain any information regarding Xero or specific financial administration responsibilities related to bank accounts, so the answer is accurate.",
-      "source_chunk_id": "023b2f34-033a-4ec1-82d8-4417d6f78daa",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Enspiral Handbook > foundation > Ops Scope of Work"
-    },
-    {
-      "question": "What tasks are expected of team members in terms of their daily contributions and interactions with management?",
-      "answer": "Based on the provided handbook, here are the expectations for a Junior Customer Support Representative (level 1) regarding their daily contributions and interactions:\n\n**Daily Contributions & Tasks**\n*   **Scope of Work:** Focuses on routine emails or calls [The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Titles for Support > Junior Customer Support Representative, level 1].\n*   **Productivity:** Throughput and productivity are currently uneven and unpredictable [The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Titles for Support > Junior Customer Support Representative, level 1].\n*   **Tool Usage:** Uses HelpScout effectively [The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Titles for Support > Junior Customer Support Representative, level 1].\n*   **Knowledge Application:** Is adept at handling commonly asked questions and inquiries [The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Titles for Support > Junior Customer Support Representative, level 1].\n\n**Interactions & Professional Development**\n*   **Communication Preferences:** Prefers email support over phone interactions, as they are not yet comfortable speaking ad-lib about the product [The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Titles for Support > Junior Customer Support Representative, level 1].\n*   **Problem Solving:** Sometimes assigns emails to others rather than finding the answers themselves, as they are still new to the company's products [The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Titles for Support > Junior Customer Support Representative, level 1].\n\nI cannot find specific information regarding daily contributions or management interactions for HackerBay employees in the provided text, as those sections of the handbook were empty [The Company Building Handbook > Onboarding / Employee Handbooks > HackerBay Employee Handbook > Development environment > Development environment; The Company Building Handbook > Onboarding / Employee Handbooks > HackerBay Employee Handbook > Performance Review for Engineers > Performance Review for Engineers; The Company Building Handbook > Onboarding / Employee Handbooks > HackerBay Employee Handbook > Performance Review > Performance Review; The Company Building Handbook > Onboarding / Employee Handbooks > HackerBay Employee Handbook > Code Reviews and Practices > Code Reviews and Practices].",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately extracts the available information for the Junior Customer Support role and correctly identifies that the provided context for other roles is empty.",
-      "source_chunk_id": "76e8c320-4366-41a1-8050-c8470d7e5f80",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Managers"
-    },
-    {
-      "question": "If you are conducting an interview and want to minimize personal bias, what concrete steps should you and your hiring team take?",
-      "answer": "To minimize personal bias during the interview and hiring process, you should implement structured evaluation frameworks and collective decision-making processes. Based on the provided handbooks, here are the concrete steps your team should take:\n\n### 1. Standardize Evaluation Criteria\n*   **Define \"Work, Drive, and Fit\":** Use a consistent rating system (e.g., 1–3 scale) for every candidate across these three specific categories. This forces the team to quantify subjective feelings into structured data [Blendle -> Hiring process].\n*   **Pre-define Success Metrics:** During the intake phase, clearly define what \"good performance\" looks like, the specific problems the role solves, and the required skills (distinguishing between \"must-haves\" and \"nice-to-haves\"). Share this profile with the entire hiring team so everyone evaluates candidates against the same benchmark [Blendle -> Hiring].\n*   **Use Evidence-Based Questions:** Move away from general conversation. Use job-related questions (e.g., \"Tell us about the app you have in the store\") that provide concrete evidence of skills rather than relying on resume impressions [Blendle -> Hiring].\n\n### 2. Implement Collective Decision-Making\n*   **The \"Count of Three\" Method:** To prevent groupthink or the influence of a dominant personality, have the hiring team show their ratings (1, 2, or 3) simultaneously on the count of three. Discuss the reasoning behind the ratings only after the initial scores are revealed [Blendle -> Hiring process].\n*   **Conclusive Hiring Decisions:** End the final assessment with a simultaneous \"thumbs up\" or \"thumbs down\" vote. Hiring decisions should be conclusive, ensuring the team is aligned [Blendle -> Hiring process].\n*   **Veto Power:** Adopt a policy where even a single objection from a team member is sufficient to stop the hiring process. This prioritizes the risk of rejecting a good candidate over the risk of accepting a bad one [Crisp DNA -> What’s the recruitment process?].\n\n### 3. Mitigate Referral Bias\n*   **Acknowledge Homogeneity Risks:** Recognize that referrals often lead to hiring people who are \"like us.\" Actively emphasize diversity as a priority during team meetings and search outside of your immediate, homogenous networks [Clef -> Referrals].\n*   **Broaden the Search:** Offset organizational bias by intentionally looking for candidates in diverse local networks and using sourcing to fill gaps in the team's existing perspective [Clef -> Referrals].\n\n### 4. Utilize \"Check-and-Balance\" Steps\n*   **Reference Checks:** Use reference checks to validate your assessment. Ask specific questions about working relationships and whether the reference would rehire the person. **Note:** You must avoid questions regarding race, gender, sexual preference, disabilities, health, political affiliation, religion, or family status to maintain legal and ethical fairness [Blendle -> Hiring process].\n*   **The \"Doubt\" Protocol:** If there are doubts, do not ignore them. If the doubt is based on solid findings, turn the candidate down. If the doubt is not based on solid findings, consider an extra step (e.g., an interview with a different senior person or a specific assignment) to gain clarity before making a final decision [Blendle -> Hiring process].",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately synthesizes the provided handbooks to offer concrete, actionable steps for minimizing bias, correctly citing the sources for each recommendation.",
-      "source_chunk_id": "15d16c24-349e-4f93-96e1-2a94b25dac56",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Hiring  > Interviewing"
-    },
-    {
-      "question": "If a company is considering moving its office to a new location, how should the team be involved in that decision compared to choosing office supplies?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding office relocation or office supplies, so the model correctly identified that it could not answer the question.",
-      "source_chunk_id": "b8dad29e-9daf-4848-9fa5-1a3bc5979676",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Crisp DNA > How we make decisions"
-    },
-    {
-      "question": "In what ways are employees expected to represent the company to the public?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding how employees are expected to represent the company to the public, so the answer is accurate.",
-      "source_chunk_id": "471c8983-4e80-4ca8-847c-dda407ac5ab5",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Basecamp Employee Handbook > Basecamp Is You"
-    },
-    {
-      "question": "What is the required process for a lead to follow when extending a job offer to a candidate?",
-      "answer": "Based on the provided handbook, the required process for extending a job offer is specific to the Remote.com team structure. The process is as follows:\n\n*   **Interview Phase:** Every candidate must be interviewed individually by both founders (Job and Marcelo) [Remote.com Employee Handbook > Hiring > Process].\n*   **Sequence of Steps:**\n    1.  Interview with the hiring manager (either founder).\n    2.  Interview with the other founder.\n    3.  Reference checks.\n    4.  Offer extension [Remote.com Employee Handbook > Hiring > Process].\n*   **Trial Period:** The company maintains a two-week trial period for new hires, during which they are paid normally [Remote.com Employee Handbook > Hiring > Process].\n\n*Note: While the handbook emphasizes being \"super-picky\" and prioritizing hiring people already known to be \"awesome\" to avoid negative performance loops, the specific procedural steps for extending an offer are defined by the Remote.com hiring process [Crisp DNA > Why this model works (for us) > Hire awesome people, or don’t hire at all].*",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately extracts the hiring process steps from the provided context while correctly identifying that these steps are specific to the Remote.com handbook.",
-      "source_chunk_id": "5afb37fc-2fff-43df-8ef6-ebf04721f7d3",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Highly Skilled Migrants and relocation"
-    },
-    {
-      "question": "How does the organization ensure that its documentation remains current and relevant?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding how the organization maintains or updates its documentation, so the model correctly identified that the answer is missing.",
-      "source_chunk_id": "56a91faf-82dc-4212-b953-06b28b020cc7",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Enspiral Handbook > Guides > Content dusting practice"
-    },
-    {
-      "question": "What objectives must be met during the first month to demonstrate progress in the role?",
-      "answer": "I cannot find the answer in the handbook. The provided documents outline manager responsibilities, career leveling, and stress management procedures, but they do not contain specific objectives or requirements for an employee's first month in a role.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding first-month objectives, and the model correctly identified this limitation.",
-      "source_chunk_id": "fef998f3-47c2-45a2-8069-ee9d63d52474",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Your 1st month "
-    },
-    {
-      "question": "What is the required procedure for submitting a reimbursement request?",
-      "answer": "The procedure for submitting a reimbursement request depends on the specific company and the nature of the expense. Based on the provided handbooks, here are the procedures for Blendle:\n\n### **Blendle Reimbursement Procedures**\n\n*   **Travel Costs (Train):**\n    *   HR will provide you with an NS Business card, which covers all home-to-work travel [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Travel costs and reimbursements > Travel costs and reimbursements].\n*   **Travel Costs (Car):**\n    *   Keep track of your kilometers.\n    *   Submit an Excel document or email to `finance@blendle.com` and `hr@blendle.com` once a month.\n    *   Reimbursement is provided at a rate of 0,19 per KM [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Travel costs and reimbursements > Travel costs and reimbursements].\n*   **General Expenses:**\n    *   Take a picture of your receipt.\n    *   Send the image to `finance@blendle.com`.\n    *   The amount will be added to your next salary and payslip [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Travel costs and reimbursements > Travel costs and reimbursements].\n*   **Headspace/Things App Subscriptions:**\n    *   Purchase the plan via the iOS or Android app.\n    *   Send the monthly or annual invoice to `officemanagement@blendle.com`.\n    *   Reimbursement is processed on a monthly basis alongside your paycheck [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Perks and benefits > Headspace/Things > Headspace/Things].\n\nI cannot find the answer in the handbook regarding reimbursement procedures for Sparksuite, Basecamp, or Remote.com.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately synthesizes the reimbursement procedures for Blendle from the provided context and correctly notes the absence of information for other companies.",
-      "source_chunk_id": "87fd93a5-04d2-4c10-8289-562ed6483ec4",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Remote.com Employee Handbook > Finance > Expenses & Reimbursements"
-    },
-    {
-      "question": "What are the two primary purposes of the Proprietary Information and Inventions Assignment Agreement?",
-      "answer": "I cannot find the answer in the handbook.",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The provided context does not contain information regarding the Proprietary Information and Inventions Assignment Agreement, so the model correctly stated it could not find the answer.",
-      "source_chunk_id": "aa499ea5-fa9d-4ed1-95dc-2939cc17d43d",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Sparksuite Employee Handbook > piiaa"
-    },
-    {
-      "question": "What is the company's policy regarding pension contributions and which provider do they use?",
-      "answer": "Based on the provided handbook, the policy regarding pension contributions is as follows:\n\n*   **Provider:** The company uses **Bright Pensioen** [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Perks and benefits > Perks and benefits].\n*   **Policy Details:** \n    *   The company facilitates pensions through Bright Pensioen, which they consider superior to standard mandatory corporate pension schemes [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Perks and benefits > Perks and benefits].\n    *   Blendle pays the costs associated with the service, ensuring that the money you contribute goes directly toward your pension [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Perks and benefits > Perks and benefits].\n    *   Employees can sign up via the company's designated page or attend a webinar for further information [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Perks and benefits > Perks and benefits].",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately identifies the pension provider and policy details based on the provided context for Blendle.",
-      "source_chunk_id": "af99c298-464d-43c1-9600-27b903184fd9",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Perks and benefits"
-    },
-    {
-      "question": "How much funding does each staff member receive per year for professional development, and what is the minimum tenure required to qualify?",
-      "answer": "The professional development funding and eligibility requirements vary depending on the specific company handbook:\n\n### **Clef (now Rublon)**\n*   **Annual Budget:** $4,000 per calendar year.\n    *   *Note:* Limited to $2,000 for the first year of implementation and for employees joining after May.\n*   **Minimum Tenure:** Not specified.\n*   **Additional Details:** Budget does not roll over; expenses must be discussed in one-on-ones and approved by the reporting founder [The Company Building Handbook > Onboarding / Employee Handbooks > Clef (now Rublon) Handbook > Continuing Education > Learning Budget].\n\n### **Nylas**\n*   **Annual Budget:** $1,000 per employment year (based on the employee’s anniversary).\n*   **Minimum Tenure:** Six months of company service [The Company Building Handbook > Onboarding / Employee Handbooks > The Nylas Handbook > Education Benefit Program > Details].\n\n### **Blendle**\n*   **Annual Budget:** Not a fixed annual amount; requests are evaluated based on whether the investment is \"reasonable\" and provides a benefit to the company.\n*   **Minimum Tenure:** Not specified.\n*   **Additional Details:** \n    *   €0–€250: No study contract required.\n    *   €250–€1,500: 12-month study contract required.\n    *   €1,500+: Edge case requiring a 24-month study contract and HR discussion [The Company Building Handbook > Onboarding / Employee Handbooks > Blendle's Employee Handbook > Party and study budget > Study budget].\n\n***\n\n*Note: If you are inquiring about a company not listed above, I cannot find the answer in the handbook.*",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately extracts the varying policies for each company mentioned in the provided context and correctly identifies the lack of tenure requirements where applicable.",
-      "source_chunk_id": "d19e12f7-b1c6-465f-808d-c4c6f3e9db01",
-      "source_breadcrumb": "The Company Building Handbook > Onboarding / Employee Handbooks > The Nylas Handbook > Education Benefit Program"
-    },
-    {
-      "question": "When evaluating whether a new product can function as a stand-alone brand, what four specific questions should be addressed?",
-      "answer": "When evaluating whether a new product can function as a stand-alone brand, you should address the following four questions:\n\n*   **Could this product become a brand?** [Start with the Brand, not the Product – ProductCoalition.com -> Start with the Brand, not the Product – ProductCoalition.com]\n*   **Is the product conveying a single concept/idea to anyone who’s building it?** [Start with the Brand, not the Product – ProductCoalition.com -> Start with the Brand, not the Product – ProductCoalition.com]\n*   **Does it have a story to tell? If yes, what’s the story behind the product?** [Start with the Brand, not the Product – ProductCoalition.com -> Start with the Brand, not the Product – ProductCoalition.com]\n*   **Could this product-brand create a profound connection with the people who are going to buy and use it to make their lives better?** [Start with the Brand, not the Product – ProductCoalition.com -> Start with the Brand, not the Product – ProductCoalition.com]",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately identifies the four specific questions provided in the source text for evaluating a product as a stand-alone brand.",
-      "source_chunk_id": "ba77033d-7b61-4114-91e3-02745316d8df",
-      "source_breadcrumb": "The Company Building Handbook > Branding > Some of my notes > Start with the Brand, not the Product – ProductCoalition.com"
-    },
-    {
-      "question": "What definition does Seth Godin provide for a brand's total value?",
-      "answer": "According to Seth Godin, a brand is defined as:\n\n*   \"The set of expectations, memories, stories and relationships that, taken together, account for a consumer’s decision to choose one product or service over another.\" [The Company Building Handbook > Branding > Some of my notes > Start with the Brand, not the Product – ProductCoalition.com]",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer accurately quotes the definition provided by Seth Godin found in the retrieved context.",
-      "source_chunk_id": "d5e39bf6-c834-44e7-83b7-5cbcf375632a",
-      "source_breadcrumb": "The Company Building Handbook > Branding > Some of my notes > Cracking The Code On Brands We Love (Infographic)"
-    },
-    {
-      "question": "How should a founder ensure that brand voice and tone are effectively implemented across different departments?",
-      "answer": "To ensure that brand voice and tone are effectively implemented across all departments, a founder must treat the brand as an \"operating system\" that guides internal decision-making and communication.\n\nHere is a structured approach to implementing brand voice and tone across your organization:\n\n### 1. Codify the Brand as an Operating System\n*   **Define the Narrative:** Clearly articulate the reason your company exists. This narrative serves as the foundation for all communication [The Company Building Handbook > Branding > Some of my notes > A Brand is an Operating System – Greylock Perspectives].\n*   **Create a Decision-Making Framework:** Translate your brand story into a set of beliefs. When employees across finance, HR, product, and marketing understand these beliefs, they can make decisions that align with the brand without needing constant oversight [The Company Building Handbook > Branding > Some of my notes > A Brand is an Operating System – Greylock Perspectives].\n\n### 2. Establish and Distribute Clear Guidelines\n*   **Develop a Style Guide:** Create a comprehensive guide that defines your tone of voice, color schemes, and positioning. This ensures that every department—from social media managers to customer support—communicates in a unified way [The Company Building Handbook > Branding > Some of my notes > Brand Strategy 101: 7 Essentials for Strong Company Branding].\n*   **Cross-Departmental Alignment:** Ensure that the voice and tone used in content are consistent across all teams. If one department’s messaging is at odds with another, it creates a disjointed and negative experience for the customer [The Company Building Handbook > Branding > Some of my notes > Why We’re Bringing Branding Back Into Marketing – Drift].\n\n### 3. Integrate Brand into the Product Experience\n*   **Blur the Lines:** Use your product as the primary vehicle for your brand message. Every micro-interaction—such as welcome screens, notifications, and micro-copy—is an opportunity to reinforce your brand voice [The Company Building Handbook > Branding > Some of my notes > Focusing On Your Brand Will Produce a Better Product - Mind the Product].\n*   **Collaborate on Product Choices:** Product managers, designers, and support reps should be well-versed in the brand guidelines to ensure the product experience feels like a natural extension of the brand [The Company Building Handbook > Branding > Some of my notes > Why We’re Bringing Branding Back Into Marketing – Drift; The Company Building Handbook > Branding > Some of my notes > Focusing On Your Brand Will Produce a Better Product - Mind the Product].\n\n### 4. Prioritize Employee Involvement\n*   **Train for Consistency:** It is critical that employees are well-versed in how to represent the brand. For example, if your brand is \"playful and bubbly\" on social media, your customer support representatives must reflect that same tone when speaking to customers directly [The Company Building Handbook > Branding > Some of my notes > Brand Strategy 101: 7 Essentials for Strong Company Branding].\n*   **Embrace Repetition:** As a founder, you must be comfortable repeating the brand’s core beliefs over and over. This repetition is necessary to ensure that as the company grows and new people join, the brand remains the consistent \"operating system\" for the entire organization [The Company Building Handbook > Branding > Some of my notes > A Brand is an Operating System – Greylock Perspectives].",
-      "faithfulness": 5,
-      "relevance": 5,
-      "reasoning": "The answer is highly accurate, well-structured, and directly addresses the prompt using the provided source material.",
-      "source_chunk_id": "2673691e-cd4e-4328-864c-1c5b0680a0cc",
-      "source_breadcrumb": "The Company Building Handbook > Branding > Some of my notes > Focusing On Your Brand Will Produce a Better Product - Mind the Product"
-    }
-  ]
+  "llm_evaluation_details": []
 }

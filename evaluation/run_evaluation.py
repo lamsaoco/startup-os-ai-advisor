@@ -29,6 +29,7 @@ from evaluation.rag_eval import RAGEvaluator, N_SAMPLE
 from evaluation.qa_generator import DEFAULT_OUTPUT_PATH, N_CHUNKS, build_ground_truth_dataset
 from evaluation.rate_limiter import RateLimiter
 from evaluation.retrieval_eval import K_VALUES, RetrievalEvaluator
+from ingestion.config import RETRIEVAL_TOP_K, RERANK_TOP_K
 
 # ── Logging Setup ─────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -236,7 +237,7 @@ def main() -> None:
         logger.info("  PHASE 4B: Retrieval Evaluation")
         logger.info(f"  Questions: {len(qa_pairs)} | Strategies: 3 | K: {K_VALUES}")
         logger.info("=" * 60)
-        retrieval_evaluator = RetrievalEvaluator(rag, top_k=20, rerank_top_k=10)
+        retrieval_evaluator = RetrievalEvaluator(rag, top_k=RETRIEVAL_TOP_K, rerank_top_k=RERANK_TOP_K)
         retrieval_results = retrieval_evaluator.evaluate(qa_pairs)
         print_retrieval_table(retrieval_results)
 

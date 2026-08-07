@@ -34,13 +34,13 @@ def embed_chunks(chunks: list[Chunk]) -> list[list[float]]:
 def embed_texts(texts: list[str]) -> list[list[float]]:
     """
     Generate embeddings for a list of raw strings.
-    Returns a flat list of embedding vectors (each is list[float] of dim 384).
+    Returns a flat list of embedding vectors (each is list[float] of dim 1024).
     """
     total = len(texts)
     print(f"[Embedder] Generating embeddings for {total} texts...")
 
-    # fastembed.embed() returns a generator of numpy arrays
-    embeddings = list(tqdm(_model.embed(texts, batch_size=EMBEDDING_BATCH_SIZE), total=total, desc="Embedding texts", unit="chunk"))
+    # fastembed.passage_embed() returns a generator of numpy arrays
+    embeddings = list(tqdm(_model.passage_embed(texts, batch_size=EMBEDDING_BATCH_SIZE), total=total, desc="Embedding texts", unit="chunk"))
     result = [emb.tolist() for emb in embeddings]
 
     print(f"[Embedder] Done — {len(result)} embeddings generated (dim={len(result[0]) if result else 0})")
@@ -50,7 +50,7 @@ def embed_texts(texts: list[str]) -> list[list[float]]:
 def embed_query(query: str) -> list[float]:
     """
     Generate a single embedding for a user query at inference time.
-    Returns a single float vector of dim 384.
+    Returns a single float vector of dim 1024.
     """
-    embeddings = list(_model.embed([query]))
+    embeddings = list(_model.query_embed([query]))
     return embeddings[0].tolist()

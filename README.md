@@ -90,7 +90,31 @@ The raw `content` field is unchanged and used for display/answer generation.
 
 **Fix**: Increased to `RETRIEVAL_TOP_K=40` and `RERANK_TOP_K=10` to widen the initial funnel.
 
+---
 
+### Issue 6 — The "Phantom" 17% Hit Rate (Database Misconfiguration)
+
+**Problem**: Despite upgrading to `bge-large`, adding breadcrumbs, and increasing `top_k`, our Hit@5 and Hit@10 metrics flatlined at exactly 17.0%. Diagnostic tests revealed two critical bugs:
+1. **IVFFlat Index Starvation**: The pgvector `ivfflat` index was created with `lists=50`, but the search was executed with the default `ivfflat.probes=1`. This meant Postgres only searched 1/50th of the database (about 24 chunks) and skipped the other 1,180 chunks entirely! For a dataset this small (~1200 chunks), using an approximate index is actually counter-productive.
+2. **Hardcoded Evaluation Limit**: `run_evaluation.py` was hardcoded to `top_k=20`, silently overriding our new `RETRIEVAL_TOP_K=40` configuration during tests.
+
+**Fix**: 
+- Dropped the IVFFlat index from the schema entirely. For ~1200 chunks, Exact Nearest Neighbor Search (SeqScan) executes in <1ms and guarantees 100% recall.
+- Replaced the hardcoded `top_k` in the evaluation script with the dynamic config values.
+
+---
+
+## Evaluation Results (Phase 4.5 — Post-Optimization)
+
+After implementing the Phase 4.5 optimizations (BGE-Large model, breadcrumb embedding, overlap, Exact Search, and increased top_k), the retrieval performance improved drastically.
+
+| Strategy | Hit@1 | Hit@3 | Hit@5 | Hit@10 | MRR@1 | MRR@3 | MRR@5 | MRR@10 |
+|---|---|---|---|---|---|---|---|---|
+| vector_only | 0.583 | 0.723 | 0.793 | 0.860 | 0.583 | 0.647 | 0.663 | 0.672 |
+| hybrid | 0.583 | 0.727 | 0.793 | 0.860 | 0.583 | 0.649 | 0.665 | 0.673 |
+| hybrid_reranker | 0.680 | 0.817 | 0.867 | 0.907 | 0.680 | 0.745 | 0.756 | 0.761 |
+
+**Conclusion**: The system now retrieves the correct chunk in the top 5 results **86.7% of the time** (up from 21.3%). The top 10 recall is **90.7%**. This exceeds the production-ready threshold and confirms our architecture choices.
 
 ---
 

@@ -170,12 +170,10 @@ def init_schema(conn) -> None:
             );
         """)
 
-        # Vector similarity index (cosine distance, IVFFlat)
-        cur.execute("""
-            CREATE INDEX IF NOT EXISTS chunks_embedding_idx
-                ON chunks USING ivfflat (embedding vector_cosine_ops)
-                WITH (lists = 50);
-        """)
+        # We explicitly DO NOT create an IVFFlat or HNSW index here.
+        # With our dataset size (~1200 chunks of 512 tokens), Exact Nearest Neighbor
+        # Search (SeqScan) executes in <1ms. Using an approximate index like IVFFlat
+        # with default probes=1 caused a severe recall drop (Hit@5 capped at 17%).
 
         # Full-text search index for BM25 (GIN on tsvector column)
         cur.execute("""

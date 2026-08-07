@@ -90,7 +90,7 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - [x] Increase `RETRIEVAL_TOP_K`: 20 → 40; `RERANK_TOP_K`: 5 → 10.
 - [x] Create `ingestion/migrate_schema.py` to DROP+recreate chunks table (dim change).
 - [x] Document known issues & optimization roadmap in `README.md`.
-- [ ] Run migration + re-ingest + re-evaluate to measure improvement.
+- `[x]` Run migration + re-ingest + re-evaluate to measure improvement.
 
 ### Phase 5: Streamlit Interface & Feedback Logging
 - [ ] Build a Streamlit chat interface.
