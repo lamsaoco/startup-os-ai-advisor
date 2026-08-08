@@ -1,0 +1,93 @@
+/* Modern Glassmorphism CSS for Streamlit */
+
+/* Base Background Gradient */
+.stApp {
+    background: linear-gradient(135deg, #1e1b4b 0%, #3b0764 50%, #000000 100%);
+    background-size: cover;
+    background-attachment: fixed;
+    color: white;
+}
+
+/* Hide standard Streamlit header and footer */
+header {
+    visibility: hidden;
+}
+footer {
+    visibility: hidden;
+}
+
+/* General Typography adjustments for better contrast on dark bg */
+h1, h2, h3, p, span, div {
+    color: #f1f5f9;
+}
+
+/* Glassmorphism Chat Bubbles */
+[data-testid="stChatMessage"] {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* User vs Assistant bubble colors */
+[data-testid="stChatMessage"][data-baseweb="card"]:nth-child(even) {
+    background: rgba(147, 51, 234, 0.1); /* Slight purple tint for Assistant */
+}
+[data-testid="stChatMessage"][data-baseweb="card"]:nth-child(odd) {
+    background: rgba(59, 130, 246, 0.1); /* Slight blue tint for User */
+}
+
+/* Chat Input Bar Glassmorphism */
+[data-testid="stChatInput"] {
+    background-color: transparent !important;
+}
+
+[data-testid="stChatInput"] > div {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+}
+
+[data-testid="stChatInput"] textarea {
+    background-color: transparent !important;
+    color: white !important;
+}
+
+[data-testid="stChatInput"] button {
+    background-color: transparent !important;
+}
+
+[data-testid="stChatInput"] svg {
+    fill: white !important;
+}
+
+/* Expander (Used for citations) */
+[data-testid="stExpander"] {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+[data-testid="stExpander"] summary {
+    color: #cbd5e1;
+}
+
+/* Feedback Buttons */
+[data-testid="stButton"] button {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    transition: all 0.3s ease;
+}
+[data-testid="stButton"] button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}

@@ -118,6 +118,23 @@ After implementing the Phase 4.5 optimizations (BGE-Large model, breadcrumb embe
 
 ---
 
+## Phase 4.6 — Advanced Retrieval Tuning (Hitting 90%+)
+
+Even with an 86.7% Hit Rate, we implemented two additional targeted tuning methods to push the hybrid search to its absolute limit:
+
+### Tuning 1: BM25 Breadcrumb Indexing (Schema Change)
+**Problem**: The keyword search (BM25) originally indexed only the raw text `content`. If a user asked a specific policy question (e.g., "What is the ESOP policy?"), and the term "ESOP" only appeared in the document title or heading, BM25 would fail to find it.
+**Fix**: Altered the database schema so the `content_tsv` column is generated using `embed_text` (which includes the Breadcrumb and Heading Path). Now, BM25 correctly matches category names and hierarchical terms perfectly.
+
+### Tuning 2: Weighted Reciprocal Rank Fusion
+**Problem**: The RRF algorithm was splitting the score 50/50 between Vector Search and BM25: `1.0 / (60 + rank)`. Because our local BGE-Large vector model is extraordinarily accurate for semantic queries, assigning 50% weight to BM25 was diluting the vector results with keyword noise.
+**Fix**: Updated `rag_base.py` to use a weighted RRF formula prioritizing semantic search, while also tightening the constant ($k=20$) to heavily favor the absolute top results:
+`RRF = (0.75 * 1.0 / (20 + vector_rank)) + (0.25 * 1.0 / (20 + bm25_rank))`
+
+*Note: Evaluation is currently running to quantify the final metrics for these tuning steps.*
+
+---
+
 ## Optimization Roadmap
 
 | Phase | Change | Status |

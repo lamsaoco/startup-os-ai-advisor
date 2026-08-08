@@ -125,7 +125,8 @@ class RAGBase:
             c.content,
             c.heading_path,
             d.breadcrumb,
-            COALESCE(1.0 / (60 + v.vector_rank), 0.0) + COALESCE(1.0 / (60 + k.keyword_rank), 0.0) AS rrf_score
+            (0.75 * COALESCE(1.0 / (20 + v.vector_rank), 0.0)) + 
+            (0.25 * COALESCE(1.0 / (20 + k.keyword_rank), 0.0)) AS rrf_score
         FROM chunks c
         LEFT JOIN vector_search v ON c.chunk_id = v.chunk_id
         LEFT JOIN keyword_search k ON c.chunk_id = k.chunk_id

@@ -165,7 +165,7 @@ def init_schema(conn) -> None:
                 token_count   INTEGER,
                 embedding     VECTOR({EMBEDDING_DIMENSIONS}),
                 content_tsv   TSVECTOR
-                              GENERATED ALWAYS AS (to_tsvector('english', content)) STORED,
+                              GENERATED ALWAYS AS (to_tsvector('english', embed_text)) STORED,
                 created_at    TIMESTAMPTZ DEFAULT NOW()
             );
         """)

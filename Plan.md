@@ -93,10 +93,10 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - `[x]` Run migration + re-ingest + re-evaluate to measure improvement.
 
 ### Phase 5: Streamlit Interface & Feedback Logging
-- [ ] Build a Streamlit chat interface.
-- [ ] Display citations/sources (Breadcrumbs) below each LLM response.
-- [ ] Add interactive Thumbs Up / Thumbs Down feedback buttons.
-- [ ] Log every interaction (Query, Response, Latency, Rating, Retrieved Chunks) to `app_monitoring_logs`.
+- `[x]` Build a Streamlit chat interface.
+- `[x]` Display citations/sources (Breadcrumbs) below each LLM response.
+- `[x]` Add interactive Thumbs Up / Thumbs Down feedback buttons.
+- `[x]` Log every interaction (Query, Response, Latency, Rating, Retrieved Chunks) to `app_monitoring_logs`.
 
 ### Phase 6: Monitoring Dashboard
 - [ ] Connect local Grafana to the PostgreSQL database.

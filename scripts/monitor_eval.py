@@ -2,7 +2,7 @@ import time
 import sys
 import re
 
-LOG_FILE = "/home/ubuntu/.gemini/antigravity-ide/brain/b0cfee91-04b6-493f-9c72-b48b55ff1eda/.system_generated/tasks/task-881.log"
+LOG_FILE = "/home/ubuntu/.gemini/antigravity-ide/brain/b0cfee91-04b6-493f-9c72-b48b55ff1eda/.system_generated/tasks/task-987.log"
 
 def main():
     print("=" * 60)

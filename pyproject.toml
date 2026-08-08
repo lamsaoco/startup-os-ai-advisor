@@ -15,4 +15,5 @@ dependencies = [
     "tiktoken>=0.13.0",
     "tqdm>=4.69.0",
     "sentence-transformers>=5.6.1",
+    "streamlit>=1.61.1",
 ]
