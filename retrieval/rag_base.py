@@ -32,16 +32,21 @@ class RAGBase:
       5. Answer Generation (LLM)
     """
 
-    def __init__(self) -> None:
-        """Initialize the LLM client and Cross-Encoder model."""
+    def __init__(self, use_reranker: bool = True) -> None:
+        """Initialize the LLM client and conditionally load the Cross-Encoder."""
         # OpenAI-compatible client pointed at Gemini endpoint
         self._llm_client = OpenAI(
             api_key=GEMINI_API_KEY,
             base_url=GEMINI_BASE_URL,
         )
-        # Cross-Encoder loaded once at startup; uses HF_HOME for cache
-        self._cross_encoder = CrossEncoder(CROSS_ENCODER_MODEL)
-        print(f"[RAGBase] Initialized. Model={CHAT_MODEL}, Reranker={CROSS_ENCODER_MODEL}")
+        self.use_reranker = use_reranker
+        if self.use_reranker:
+            # Cross-Encoder loaded once at startup; uses HF_HOME for cache
+            self._cross_encoder = CrossEncoder(CROSS_ENCODER_MODEL)
+            print(f"[RAGBase] Initialized with Reranker={CROSS_ENCODER_MODEL}")
+        else:
+            self._cross_encoder = None
+            print("[RAGBase] Initialized without Reranker (Fast Mode)")
 
     # ------------------------------------------------------------------
     # Step 1 — Query Rewriting
@@ -185,6 +190,10 @@ class RAGBase:
         """
         if not results:
             return []
+
+        if not getattr(self, 'use_reranker', True):
+            print(f"[RAGBase] Skipping reranking (Fast Mode). Kept top {top_k} chunks.")
+            return results[:top_k]
 
         documents = [res["content"] for res in results]
         print(f"[RAGBase] Reranking {len(documents)} chunks...")

@@ -23,7 +23,7 @@ load_css()
 
 # --- 2. Initialize App State ---
 if "rag_engine" not in st.session_state:
-    st.session_state.rag_engine = RAGBase()
+    st.session_state.rag_engine = RAGBase(use_reranker=False)
 
 if "messages" not in st.session_state:
     # Initial welcome message

@@ -1,0 +1,22 @@
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+
+WORKDIR /app
+
+# Copy dependency files
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies using uv (creates .venv)
+RUN uv sync
+
+# Copy necessary application source code
+# We don't copy dags/ or evaluation/ because they are not needed for UI
+COPY .env ./
+COPY retrieval/ retrieval/
+COPY ingestion/ ingestion/
+COPY ui/ ui/
+
+# Expose Streamlit default port
+EXPOSE 8501
+
+# Run Streamlit using the uv virtual environment
+CMD ["uv", "run", "streamlit", "run", "ui/app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]

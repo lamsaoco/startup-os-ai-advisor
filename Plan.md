@@ -107,9 +107,9 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - [ ] Export Grafana dashboard JSON to repository.
 
 ### Phase 7: Containerization & Cloud Deployment
-- [ ] Write a `Dockerfile` for the Streamlit application.
-- [ ] Update `docker-compose.yml` to include the Streamlit app container.
-- [ ] Provision AWS infrastructure (EC2 `t3.micro` recommended for cost).
+- `[x]` Write a `Dockerfile` for the Streamlit application.
+- `[x]` Update `docker-compose.yml` to include the Streamlit app container.
+- `[x]` Provision AWS infrastructure (EC2 `t3.micro` recommended for cost).
 - [ ] Deploy the complete system to AWS and ensure public access.
 
 ### Phase 8: Final Documentation

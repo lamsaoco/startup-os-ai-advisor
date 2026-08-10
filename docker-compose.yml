@@ -92,6 +92,21 @@ services:
       postgres:
         condition: service_healthy
 
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    container_name: startup_os_streamlit
+    restart: always
+    ports:
+      - "8501:8501"
+    environment:
+      - POSTGRES_HOST=postgres
+      # Optional: Any other env variables can be passed here or loaded from .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres_data:
   pgadmin_data:

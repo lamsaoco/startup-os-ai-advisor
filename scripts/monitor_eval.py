@@ -2,9 +2,27 @@ import time
 import sys
 import re
 
-LOG_FILE = "/home/ubuntu/.gemini/antigravity-ide/brain/b0cfee91-04b6-493f-9c72-b48b55ff1eda/.system_generated/tasks/task-987.log"
+import os
+import glob
+
+def get_latest_log():
+    log_dir = "/home/ubuntu/.gemini/antigravity-ide/brain/*/.system_generated/tasks/*.log"
+    logs = glob.glob(log_dir)
+    if not logs:
+        return None
+    return max(logs, key=os.path.getctime)
 
 def main():
+    if len(sys.argv) > 1:
+        log_file = sys.argv[1]
+    else:
+        log_file = get_latest_log()
+    
+    if not log_file:
+        print("No log file found.")
+        return
+        
+    print(f"Monitoring log: {log_file}")
     print("=" * 60)
     print("📊 LIVE EVALUATION PROGRESS MONITOR")
     print("=" * 60)
@@ -16,7 +34,7 @@ def main():
     pattern = re.compile(r"\[RetrievalEval\] \[(\d+)/(\d+)\]")
 
     try:
-        with open(LOG_FILE, "r") as f:
+        with open(log_file, "r") as f:
             while True:
                 line = f.readline()
                 if not line:
@@ -43,7 +61,7 @@ def main():
     except KeyboardInterrupt:
         print("\nMonitor stopped.")
     except FileNotFoundError:
-        print(f"Log file not found: {LOG_FILE}")
+        print(f"Log file not found: {log_file}")
 
 if __name__ == "__main__":
     main()

@@ -131,7 +131,18 @@ Even with an 86.7% Hit Rate, we implemented two additional targeted tuning metho
 **Fix**: Updated `rag_base.py` to use a weighted RRF formula prioritizing semantic search, while also tightening the constant ($k=20$) to heavily favor the absolute top results:
 `RRF = (0.75 * 1.0 / (20 + vector_rank)) + (0.25 * 1.0 / (20 + bm25_rank))`
 
-*Note: Evaluation is currently running to quantify the final metrics for these tuning steps.*
+### Final Evaluation Results (Phase 4.6 - Optimized for Memory/Speed)
+
+After implementing the above optimizations and reducing `RETRIEVAL_TOP_K=15` and `RERANK_TOP_K=5` to prevent Out-Of-Memory (OOM) crashes on the server, the final metrics over the 300 Q&A Ground Truth dataset are:
+
+| Strategy | Hit@1 | Hit@3 | Hit@5 | Hit@10 | MRR@1 | MRR@3 | MRR@5 | MRR@10 |
+|---|---|---|---|---|---|---|---|---|
+| vector_only | 0.583 | 0.723 | 0.793 | 0.860 | 0.583 | 0.647 | 0.663 | 0.672 |
+| hybrid | 0.587 | 0.727 | 0.793 | 0.860 | 0.587 | 0.651 | 0.666 | 0.675 |
+| hybrid_reranker | 0.680 | 0.803 | 0.843 | 0.843 | 0.680 | 0.739 | 0.748 | 0.748 |
+
+**Conclusion:** 
+While the Hit Rate slightly dropped from 86.7% to 84.3% due to reducing the Reranker window (Top 40 -> Top 15), this trade-off was necessary to solve catastrophic OOM crashes and reduce latency from 37s -> 4s. The Fast Mode (`hybrid` without Reranker) still achieves nearly 80% Hit Rate and is used by default in the UI for optimal user experience.
 
 ---
 
