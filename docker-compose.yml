@@ -53,7 +53,7 @@ services:
   airflow:
     build: 
       context: .
-      dockerfile: Dockerfile.airflow
+      dockerfile: docker/Dockerfile.airflow
     container_name: startup_os_airflow
     restart: always
     # Run as the same UID as the host user to avoid volume permission errors.
@@ -95,7 +95,7 @@ services:
   streamlit:
     build:
       context: .
-      dockerfile: Dockerfile.streamlit
+      dockerfile: docker/Dockerfile.streamlit
     container_name: startup_os_streamlit
     restart: always
     ports:
