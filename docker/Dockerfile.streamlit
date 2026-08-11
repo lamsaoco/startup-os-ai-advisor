@@ -8,6 +8,9 @@ COPY pyproject.toml uv.lock ./
 # Install dependencies using uv (creates .venv)
 RUN uv sync
 
+# Ensure top-level packages (retrieval/, ingestion/, ui/) are importable
+ENV PYTHONPATH=/app
+
 # Copy necessary application source code
 # We don't copy dags/ or evaluation/ because they are not needed for UI
 COPY .env ./

@@ -99,12 +99,12 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - `[x]` Log every interaction (Query, Response, Latency, Rating, Retrieved Chunks) to `app_monitoring_logs`.
 
 ### Phase 6: Monitoring Dashboard
-- [ ] Connect local Grafana to the PostgreSQL database.
-- [ ] Build Dashboard Chart 1: Total Queries Over Time.
-- [ ] Build Dashboard Chart 2: Average System Latency.
-- [ ] Build Dashboard Chart 3: User Satisfaction Score (Thumbs up ratio).
-- [ ] Build Dashboard Chart 4: Negative Feedback Logs (Table view for debugging).
-- [ ] Export Grafana dashboard JSON to repository.
+- [x] Connect local Grafana to the PostgreSQL database (auto-provisioned via `docker/grafana/provisioning/datasources/postgres.yml`).
+- [x] Build Dashboard Chart 1: Total Queries Over Time.
+- [x] Build Dashboard Chart 2: Average System Latency.
+- [x] Build Dashboard Chart 3: User Satisfaction Score (Thumbs up ratio).
+- [x] Build Dashboard Chart 4: Negative Feedback Logs (Table view for debugging).
+- [x] Export Grafana dashboard JSON to repository (`docker/grafana/dashboards/monitoring.json`).
 
 ### Phase 7: Containerization & Cloud Deployment
 - `[x]` Write a `Dockerfile` for the Streamlit application.
