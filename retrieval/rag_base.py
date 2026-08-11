@@ -8,7 +8,6 @@ import time
 from typing import List, Dict, Any
 
 from openai import OpenAI
-from sentence_transformers import CrossEncoder
 
 from ingestion.config import (
     GEMINI_API_KEY,
@@ -41,6 +40,9 @@ class RAGBase:
         )
         self.use_reranker = use_reranker
         if self.use_reranker:
+            # Import heavily lazy to prevent slow initial Streamlit loads
+            from sentence_transformers import CrossEncoder
+            
             # Cross-Encoder loaded once at startup; uses HF_HOME for cache
             self._cross_encoder = CrossEncoder(CROSS_ENCODER_MODEL)
             print(f"[RAGBase] Initialized with Reranker={CROSS_ENCODER_MODEL}")

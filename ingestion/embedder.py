@@ -17,8 +17,14 @@ import os
 # Docker containers should set FASTEMBED_CACHE_DIR via docker-compose env.
 _project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE_DIR = os.getenv("FASTEMBED_CACHE_DIR", os.path.join(_project_root, "data", ".model_cache"))
-_model = TextEmbedding(model_name=EMBEDDING_MODEL, cache_dir=CACHE_DIR)
 
+_model = None
+
+def _get_model():
+    global _model
+    if _model is None:
+        _model = TextEmbedding(model_name=EMBEDDING_MODEL, cache_dir=CACHE_DIR)
+    return _model
 
 def embed_chunks(chunks: list[Chunk]) -> list[list[float]]:
     """
@@ -39,8 +45,9 @@ def embed_texts(texts: list[str]) -> list[list[float]]:
     total = len(texts)
     print(f"[Embedder] Generating embeddings for {total} texts...")
 
+    model = _get_model()
     # fastembed.passage_embed() returns a generator of numpy arrays
-    embeddings = list(tqdm(_model.passage_embed(texts, batch_size=EMBEDDING_BATCH_SIZE), total=total, desc="Embedding texts", unit="chunk"))
+    embeddings = list(tqdm(model.passage_embed(texts, batch_size=EMBEDDING_BATCH_SIZE), total=total, desc="Embedding texts", unit="chunk"))
     result = [emb.tolist() for emb in embeddings]
 
     print(f"[Embedder] Done — {len(result)} embeddings generated (dim={len(result[0]) if result else 0})")
@@ -52,5 +59,6 @@ def embed_query(query: str) -> list[float]:
     Generate a single embedding for a user query at inference time.
     Returns a single float vector of dim 1024.
     """
-    embeddings = list(_model.query_embed([query]))
+    model = _get_model()
+    embeddings = list(model.query_embed([query]))
     return embeddings[0].tolist()
