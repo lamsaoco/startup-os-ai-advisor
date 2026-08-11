@@ -197,6 +197,10 @@ def parse_args() -> argparse.Namespace:
         help="Skip LLM judge evaluation — only compute retrieval metrics",
     )
     parser.add_argument(
+        "--llm-only", action="store_true",
+        help="Skip retrieval evaluation and only run LLM judge (uses cached retrieval results)",
+    )
+    parser.add_argument(
         "--n-chunks", type=int, default=N_CHUNKS, metavar="N",
         help=f"Chunks to sample for QA generation (default: {N_CHUNKS})",
     )
@@ -212,7 +216,7 @@ def main() -> None:
     args = parse_args()
 
     # Default: run --evaluate if no flag is given
-    if not args.generate and not args.evaluate:
+    if not args.generate and not args.evaluate and not args.llm_only:
         args.evaluate = True
 
     # ── Phase 4A: Synthetic QA Generation ─────────────────────────────────────
@@ -224,7 +228,7 @@ def main() -> None:
         logger.info("=" * 60)
         build_ground_truth_dataset(n_chunks=args.n_chunks, output_path=GROUND_TRUTH_PATH)
 
-    # ── Phase 4B + 4C: Evaluation ─────────────────────────────────────────────
+    # ── Phase 4B + 4C: Full Evaluation ────────────────────────────────────────
     if args.evaluate:
         qa_pairs = load_ground_truth(GROUND_TRUTH_PATH)
 
@@ -261,6 +265,39 @@ def main() -> None:
         save_report(retrieval_results, llm_results, qa_pairs)
 
         logger.info("\n[Runner] ✅ Evaluation complete!")
+
+    # ── Phase 4C only: LLM Judge using cached retrieval results ───────────────
+    if args.llm_only:
+        import json as _json
+        qa_pairs = load_ground_truth(GROUND_TRUTH_PATH)
+
+        logger.info("[Runner] --llm-only mode: skipping retrieval eval, using cached results.")
+        cached_report = RESULTS_DIR / "eval_report.json"
+        if cached_report.exists():
+            with open(cached_report) as f:
+                cached = _json.load(f)
+            retrieval_results = cached.get("retrieval_evaluation", {})
+            logger.info("[Runner] Loaded cached retrieval results from eval_report.json")
+        else:
+            retrieval_results = {}
+            logger.warning("[Runner] No cached retrieval results found. Save report will have empty retrieval section.")
+
+        logger.info("[Runner] Initializing RAGBase (cross-encoder loads once)...")
+        rag = RAGBase()
+        rate_limiter = RateLimiter(rpm=12)
+
+        logger.info("=" * 60)
+        logger.info("  PHASE 4C: LLM Quality Evaluation (llm-only mode)")
+        logger.info(f"  Sample: {args.n_sample} questions | Judge: Gemini-as-a-Judge")
+        logger.info(f"  Estimated time: ~{args.n_sample // 12 + 1} minutes")
+        logger.info("=" * 60)
+        llm_evaluator = RAGEvaluator(rag, rate_limiter)
+        llm_results = llm_evaluator.evaluate(qa_pairs, n_sample=args.n_sample)
+        print_llm_table(llm_results)
+
+        # Append LLM results into existing report without overwriting retrieval scores
+        save_report(retrieval_results, llm_results, qa_pairs)
+        logger.info("\n[Runner] ✅ LLM evaluation complete!")
 
 
 if __name__ == "__main__":

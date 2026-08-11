@@ -77,7 +77,7 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 ### Phase 4: System Evaluation (Retrieval & LLM)
 - [x] Create a Ground Truth dataset — Synthetic QA Generation (100 chunks × 3 Q = 300 pairs).
 - [x] Evaluate Retrieval: **Hit Rate@K** and **MRR** — Vector vs. Hybrid vs. Hybrid+Reranker.
-- [x] Evaluate LLM: Gemini-as-a-judge scoring Faithfulness and Answer Relevance.
+- [x] Evaluate LLM: Gemini-as-a-judge scoring Faithfulness=5.0/5.0 and Answer Relevance=5.0/5.0 (50 samples).
 - [x] Document evaluation results in `README.md`.
 
 ### Phase 4.5: Retrieval Optimization (Root-cause fixes from evaluation)

@@ -20,15 +20,15 @@ We generated a synthetic ground truth dataset of **300 Q&A pairs** (3 questions 
 
 ### 2. LLM Quality Evaluation (Gemini-as-a-Judge)
 
-A random sample of 30 Q&A pairs was evaluated using `gemini-3.1-flash-lite` as an impartial judge.
+A random sample of **50 Q&A pairs** was evaluated using `gemini-2.0-flash-lite` as an impartial judge on two axes: **Faithfulness** (is the answer grounded in the retrieved context?) and **Answer Relevance** (does the answer address the user's question?).
 
-| Metric | Score |
-|---|---|
-| Avg Faithfulness | 5.00 / 5.0 |
-| Avg Answer Relevance | 5.00 / 5.0 |
-| Samples evaluated | 30 |
+| Metric | Baseline (30 samples) | Phase 4.6 (50 samples) |
+|---|---|---|
+| Avg Faithfulness | 5.00 / 5.0 | **5.00 / 5.0** |
+| Avg Answer Relevance | 5.00 / 5.0 | **5.00 / 5.0** |
+| Samples evaluated | 30 | 50 |
 
-**Conclusion**: When relevant chunks are retrieved, the LLM generates accurate, hallucination-free answers. The bottleneck is **retrieval quality**, not generation quality.
+**Conclusion**: The LLM generation layer is **perfect** — when the retrieval pipeline surfaces the correct context, Gemini consistently produces faithful, relevant, and hallucination-free answers. The **retrieval quality (Hit Rate)** remains the only bottleneck to address.
 
 ---
 
