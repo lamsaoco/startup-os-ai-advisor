@@ -111,11 +111,11 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - `[x]` Write a `Dockerfile` for the Streamlit application.
 - `[x]` Update `docker-compose.yml` to include the Streamlit app container.
 - `[x]` Provision AWS infrastructure (EC2 `t3.micro` recommended for cost).
-- [ ] Deploy the complete system to AWS and ensure public access.
+- `[x]` Deploy the complete system to AWS and ensure public access.
 
 ### Phase 8: Final Documentation
-- [ ] Write a comprehensive `README.md` addressing all Capstone evaluation criteria.
-- [ ] Add system architecture diagrams.
-- [ ] Include Evaluation Results (Hit Rate, MRR, Faithfulness scores).
-- [ ] Provide clear instructions on how to run locally via Docker.
-- [ ] Record a short 2-3 minute demo video (UI, search quality, Grafana dashboard).
+- `[x]` Write a comprehensive `README.md` addressing all Capstone evaluation criteria.
+- `[x]` Add system architecture diagrams.
+- `[x]` Include Evaluation Results (Hit Rate, MRR, Faithfulness scores).
+- `[x]` Provide clear instructions on how to run locally via Docker.
+- `[x]` Record a short 2-3 minute demo video (UI, search quality, Grafana dashboard).

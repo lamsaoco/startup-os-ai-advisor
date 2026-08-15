@@ -207,7 +207,7 @@ div[data-testid="stVerticalBlock"]:has(#empty-state-btns) button:hover {
 }
 
 /* 4. Feedback Buttons (Helpful/Not Helpful) */
-div[data-testid="stVerticalBlock"]:has(#feedback-btns) button {
+div[data-testid="stVerticalBlock"]:has(.feedback-btns-marker) button {
     background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 20px !important;
@@ -219,7 +219,7 @@ div[data-testid="stVerticalBlock"]:has(#feedback-btns) button {
     transition: all 0.3s ease !important;
     width: 140px !important;
 }
-div[data-testid="stVerticalBlock"]:has(#feedback-btns) button:hover {
+div[data-testid="stVerticalBlock"]:has(.feedback-btns-marker) button:hover {
     background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(13, 148, 136, 0.15)) !important;
     color: #fff !important;
     border-color: rgba(139, 92, 246, 0.5) !important;
@@ -335,16 +335,20 @@ def get_rag_engine():
         print(f"Warmup error: {e}")
     return engine
 
-# Eager Pre-loading in main thread to ensure chat is fast (blocks first page load)
-if "engine_warmup_started" not in st.session_state:
-    st.session_state.engine_warmup_started = True
-    get_rag_engine()
-
 if "messages"        not in st.session_state: st.session_state.messages = []
 if "last_log_id"     not in st.session_state: st.session_state.last_log_id = None
 if "last_latency"    not in st.session_state: st.session_state.last_latency = None
 if "pending_prompt"  not in st.session_state: st.session_state.pending_prompt = None
 if "is_processing"   not in st.session_state: st.session_state.is_processing = False
+
+if "rag_engine" not in st.session_state:
+    st.markdown("<div style='margin-top: 30vh; text-align: center;'><h2 style='color: #e6edf3; font-size: 2.5rem;'>🚀 Startup OS AI Advisor</h2><p style='color: #8b949e; font-size: 1.1rem; margin-top: 15px;'>Initializing AI Engine. This will take a moment...</p></div>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([2, 3, 2])
+    with col2:
+        with st.spinner("🤖 Loading AI models into memory..."):
+            st.session_state.rag_engine = get_rag_engine()
+    st.rerun()
 
 
 # ==========================================
@@ -374,9 +378,11 @@ with st.sidebar:
 
     st.markdown("<br>", unsafe_allow_html=True)
     
+    engine_ready = "rag_engine" in st.session_state
+    
     # Nút chức năng
     st.markdown('<div id="new-chat-btn"></div>', unsafe_allow_html=True)
-    if st.button("✨ New Conversation", use_container_width=True):
+    if st.button("✨ New Conversation", use_container_width=True, disabled=not engine_ready):
         st.session_state.messages = []
         st.session_state.last_log_id = None
         st.session_state.last_latency = None
@@ -387,10 +393,10 @@ with st.sidebar:
     topic_container = st.container()
     with topic_container:
         st.markdown('<div id="nav-topic-btns"></div>', unsafe_allow_html=True)
-        if st.button("📋 HR Policies", use_container_width=True): st.session_state.pending_prompt = "Tell me about HR policies"
-        if st.button("🚀 Hiring Process", use_container_width=True): st.session_state.pending_prompt = "Tell me about the Hiring Process"
-        if st.button("💰 Compensation", use_container_width=True): st.session_state.pending_prompt = "How does Compensation work?"
-        if st.button("📈 Performance Reviews", use_container_width=True): st.session_state.pending_prompt = "Explain Performance Reviews"
+        if st.button("📋 HR Policies", use_container_width=True, disabled=not engine_ready): st.session_state.pending_prompt = "Tell me about HR policies"
+        if st.button("🚀 Hiring Process", use_container_width=True, disabled=not engine_ready): st.session_state.pending_prompt = "Tell me about the Hiring Process"
+        if st.button("💰 Compensation", use_container_width=True, disabled=not engine_ready): st.session_state.pending_prompt = "How does Compensation work?"
+        if st.button("📈 Performance Reviews", use_container_width=True, disabled=not engine_ready): st.session_state.pending_prompt = "Explain Performance Reviews"
 
 
 with st.container():
@@ -412,13 +418,13 @@ with st.container():
                 st.markdown('<div id="empty-state-btns"></div>', unsafe_allow_html=True)
                 c1, c2, c3 = st.columns([1, 6, 1])
                 with c2:
-                    if st.button("What is the remote work policy?", use_container_width=True):
+                    if st.button("What is the remote work policy?", use_container_width=True, disabled=not engine_ready):
                         st.session_state.pending_prompt = "What is the remote work policy?"
                         st.rerun()
-                    if st.button("How do I request a new laptop?", use_container_width=True):
+                    if st.button("How do I request a new laptop?", use_container_width=True, disabled=not engine_ready):
                         st.session_state.pending_prompt = "How do I request a new laptop?"
                         st.rerun()
-                    if st.button("Explain the performance review cycle", use_container_width=True):
+                    if st.button("Explain the performance review cycle", use_container_width=True, disabled=not engine_ready):
                         st.session_state.pending_prompt = "Explain the performance review cycle"
                         st.rerun()
     else:
@@ -461,7 +467,9 @@ with st.container():
                     # Add Feedback Buttons directly below the message if it has a log_id
                     log_id = msg.get("log_id")
                     if log_id:
-                        if not msg.get("feedback"):
+                        st.markdown('<div class="feedback-btns-marker"></div>', unsafe_allow_html=True)
+                        has_feedback = bool(msg.get("feedback"))
+                        if not has_feedback:
                             c1, c2, _ = st.columns([1.5, 1.5, 9])
                             with c1:
                                 if st.button("👍 Helpful", key=f"up_{log_id}"):
@@ -474,7 +482,7 @@ with st.container():
                                     msg["feedback"] = -1
                                     st.rerun()
                         else:
-                            st.caption("✨ Cảm ơn bạn đã đánh giá!")
+                            st.caption("✨ Thank you for your feedback!")
 
     # --- INPUT AREA ---
     # Handled natively by st.chat_input below
@@ -487,7 +495,8 @@ with st.container():
 # ==========================================
 # 6. Process Input
 # ==========================================
-prompt_input = st.chat_input("Type your message here...")
+placeholder_msg = "Type your message here..." if engine_ready else "Model is loading, please wait..."
+prompt_input = st.chat_input(placeholder_msg, disabled=not engine_ready)
 
 prompt = None
 if prompt_input:
@@ -541,6 +550,7 @@ if prompt:
         st.session_state.messages.append({
             "role": "assistant", "content": answer,
             "sources": chunks, "latency": latency,
+            "log_id": log_id, "feedback": None
         })
 
     except Exception as e:

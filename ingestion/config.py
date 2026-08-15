@@ -35,5 +35,5 @@ CHUNK_OVERLAP_TOKENS: int = 64 # Token overlap between consecutive paragraph sub
 EMBEDDING_BATCH_SIZE: int = 128  # Chunks per local model batch (MiniLM is fast on CPU)
 
 # ── Retrieval & Reranking ────────────────────────────────────────────────────
-RETRIEVAL_TOP_K: int = 8         # Reduced to 8 to avoid slow CPU reranking (16 max candidates)
-RERANK_TOP_K: int = 3           # Reduced to 3 for faster LLM processing
+RETRIEVAL_TOP_K: int = 15        # Number of chunks to retrieve from DB via Hybrid Search
+RERANK_TOP_K: int = 5           # Number of chunks to keep after Cross-Encoder Reranking
