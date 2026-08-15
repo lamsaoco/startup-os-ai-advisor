@@ -63,33 +63,33 @@ Users can chat with the agent to get step-by-step guidance, exact frameworks, an
 ```mermaid
 graph TD
     subgraph "Data Ingestion Pipeline (Airflow DAGs)"
-        A[Notion Workspace] -->|notion-client API| B(notion_crawler.py)
-        B --> C{PageData Objects}
-        C -->|Markdown Text| D(text_extractor.py)
-        D -->|Heading-aware Splitting| E(chunker.py)
-        E -->|Chunks + Breadcrumb Overlap| F(embedder.py)
-        F -->|BAAI/bge-large-en-v1.5| G[(PostgreSQL + pgvector)]
+        A["Notion Workspace"] -->|notion-client API| B("notion_crawler.py")
+        B --> C{"PageData Objects"}
+        C -->|Markdown Text| D("text_extractor.py")
+        D -->|Heading-aware Splitting| E("chunker.py")
+        E -->|Chunks + Breadcrumb Overlap| F("embedder.py")
+        F -->|BAAI/bge-large-en-v1.5| G[("PostgreSQL + pgvector")]
     end
 
     subgraph "User Interaction (Streamlit)"
-        U((User)) -->|Query| UI[Streamlit App]
+        U(("User")) -->|Query| UI["Streamlit App"]
     end
 
     subgraph "RAG Retrieval Pipeline"
-        UI -->|Query| QR[Query Rewriter (Gemini)]
-        QR -->|Synonyms & Expansions| HS{Hybrid Search}
+        UI -->|Query| QR["Query Rewriter (Gemini)"]
+        QR -->|Synonyms & Expansions| HS{"Hybrid Search"}
         HS -->|Cosine Similarity| G
         HS -->|BM25 Full Text Search| G
-        G -->|Top 40 Vector + Top 40 Keyword| RRF[Reciprocal Rank Fusion]
-        RRF -->|Top 15 Combined| CE[Cross-Encoder Reranker]
-        CE -->|Top 5 Context Chunks| LLM[LLM Generation (Gemini-2.0-Flash-lite)]
+        G -->|Top 40 Vector + Top 40 Keyword| RRF["Reciprocal Rank Fusion"]
+        RRF -->|Top 15 Combined| CE["Cross-Encoder Reranker"]
+        CE -->|Top 5 Context Chunks| LLM["LLM Generation (Gemini-2.0-Flash-lite)"]
     end
 
     LLM -->|Answer + Citations| UI
-    UI -->|Log Query, Latency, Feedback| L[(App Monitoring DB)]
+    UI -->|Log Query, Latency, Feedback| L[("App Monitoring DB")]
     
     subgraph "Observability"
-        L --> GR[Grafana Dashboard]
+        L --> GR["Grafana Dashboard"]
     end
 ```
 
