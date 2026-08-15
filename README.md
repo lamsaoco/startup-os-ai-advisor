@@ -93,8 +93,7 @@ graph TD
     end
 ```
 
-> **[INSERT IMAGE: Architecture_Diagram.png]**
-> *(Please insert a high-resolution version of the architecture diagram if preferred over the Mermaid chart above)*
+![Architecture Diagram](images/architecture.png)
 
 ---
 
