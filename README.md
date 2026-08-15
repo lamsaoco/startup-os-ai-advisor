@@ -62,7 +62,7 @@ Users can chat with the agent to get step-by-step guidance, exact frameworks, an
 
 ```mermaid
 graph TD
-    subgraph Data Ingestion Pipeline (Airflow DAGs)
+    subgraph "Data Ingestion Pipeline (Airflow DAGs)"
         A[Notion Workspace] -->|notion-client API| B(notion_crawler.py)
         B --> C{PageData Objects}
         C -->|Markdown Text| D(text_extractor.py)
@@ -71,11 +71,11 @@ graph TD
         F -->|BAAI/bge-large-en-v1.5| G[(PostgreSQL + pgvector)]
     end
 
-    subgraph User Interaction (Streamlit)
+    subgraph "User Interaction (Streamlit)"
         U((User)) -->|Query| UI[Streamlit App]
     end
 
-    subgraph RAG Retrieval Pipeline
+    subgraph "RAG Retrieval Pipeline"
         UI -->|Query| QR[Query Rewriter (Gemini)]
         QR -->|Synonyms & Expansions| HS{Hybrid Search}
         HS -->|Cosine Similarity| G
@@ -88,7 +88,7 @@ graph TD
     LLM -->|Answer + Citations| UI
     UI -->|Log Query, Latency, Feedback| L[(App Monitoring DB)]
     
-    subgraph Observability
+    subgraph "Observability"
         L --> GR[Grafana Dashboard]
     end
 ```
