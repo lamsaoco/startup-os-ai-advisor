@@ -40,12 +40,12 @@ class RAGBase:
         )
         self.use_reranker = use_reranker
         if self.use_reranker:
-            # Import heavily lazy to prevent slow initial Streamlit loads
+            import torch
             from sentence_transformers import CrossEncoder
             
-            # Cross-Encoder loaded once at startup; uses HF_HOME for cache
+            torch.set_num_threads(1)
             self._cross_encoder = CrossEncoder(CROSS_ENCODER_MODEL)
-            print(f"[RAGBase] Initialized with Reranker={CROSS_ENCODER_MODEL}")
+            print(f"[RAGBase] Initialized with Reranker={CROSS_ENCODER_MODEL} (sentence-transformers)")
         else:
             self._cross_encoder = None
             print("[RAGBase] Initialized without Reranker (Fast Mode)")
@@ -200,7 +200,8 @@ class RAGBase:
         documents = [res["content"] for res in results]
         print(f"[RAGBase] Reranking {len(documents)} chunks...")
 
-        scores = self._cross_encoder.predict([(query, doc) for doc in documents])
+        pairs = [[query, doc] for doc in documents]
+        scores = self._cross_encoder.predict(pairs)
 
         for i, score in enumerate(scores):
             results[i]["rerank_score"] = float(score)

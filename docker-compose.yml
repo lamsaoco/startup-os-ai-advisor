@@ -105,7 +105,18 @@ services:
       - "8501:8501"
     environment:
       - POSTGRES_HOST=postgres
-      # Optional: Any other env variables can be passed here or loaded from .env
+      - HF_HOME=/app/data/.model_cache
+      - FASTEMBED_CACHE_DIR=/app/data/.model_cache
+      - STREAMLIT_THEME_BASE=dark
+      - STREAMLIT_THEME_PRIMARY_COLOR=#8b5cf6
+      - STREAMLIT_THEME_BACKGROUND_COLOR=#09090b
+      - STREAMLIT_THEME_SECONDARY_BACKGROUND_COLOR=#18181b
+      - STREAMLIT_THEME_TEXT_COLOR=#c9d1d9
+    volumes:
+      - ./data:/app/data
+      - ./ui:/app/ui
+      - ./retrieval:/app/retrieval
+      - ./ingestion:/app/ingestion
     depends_on:
       postgres:
         condition: service_healthy

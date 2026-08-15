@@ -23,7 +23,7 @@ _model = None
 def _get_model():
     global _model
     if _model is None:
-        _model = TextEmbedding(model_name=EMBEDDING_MODEL, cache_dir=CACHE_DIR)
+        _model = TextEmbedding(model_name=EMBEDDING_MODEL, cache_dir=CACHE_DIR, threads=1)
     return _model
 
 def embed_chunks(chunks: list[Chunk]) -> list[list[float]]:

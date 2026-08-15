@@ -91,6 +91,7 @@ This project builds an **AI Operations & HR Advisor**. By ingesting the comprehe
 - [x] Create `ingestion/migrate_schema.py` to DROP+recreate chunks table (dim change).
 - [x] Document known issues & optimization roadmap in `README.md`.
 - `[x]` Run migration + re-ingest + re-evaluate to measure improvement.
+- `[x]` Eliminate cold-start latency (drop PyTorch) by replacing `sentence-transformers` with `fastembed` for Reranking.
 
 ### Phase 5: Streamlit Interface & Feedback Logging
 - `[x]` Build a Streamlit chat interface.
