@@ -59,9 +59,9 @@ Users can chat with the agent to get step-by-step guidance, exact frameworks, an
 * **Use Case 3 (Organizational Structure & Comp):** 
   * *Query:* "Explain the difference between offering ESOP (Equity) versus Profit Sharing for middle managers."
 
-<!-- 📸 TODO: Thêm video demo vào đây (kéo thả file mp4 vào GitHub editor) -->
+<video src="medias/Chat_Interface_demo.mp4" controls width="100%"></video>
 
-<!-- 📸 TODO: Thêm ảnh Chat_Interface.png vào đây -->
+![Chat Interface](medias/Chat_Interface.png)
 
 ---
 
@@ -271,7 +271,7 @@ Both DAGs are configured with `email_on_failure: True`. When any task fails, Air
 
 ## 🏗️ System Architecture
 
-![Architecture Diagram](images/architecture.png)
+![Architecture Diagram](medias/architecture.png)
 
 The system has two independent pipelines:
 1. **Ingestion (offline):** Airflow DAGs crawl Notion → chunk → embed → load into PostgreSQL. *(see [§ Data Ingestion Pipeline](#-data-ingestion-pipeline) below)*
@@ -514,7 +514,7 @@ Every query, LLM response, retrieval latency, and user feedback (👍 / 👎) is
 7. 💚 **User Satisfaction Over Time** — Helpful vs. Not Helpful ratings tracked chronologically
 8. 📋 **Negative Feedback Log** — Table view of exact user queries and AI responses for thumbs-down ratings (useful for debugging)
 
-![Grafana Dashboard](images/grafana_dashboard.png)
+![Grafana Dashboard](medias/grafana_dashboard.png)
 
 ---
 
