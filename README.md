@@ -59,7 +59,7 @@ Users can chat with the agent to get step-by-step guidance, exact frameworks, an
 * **Use Case 3 (Organizational Structure & Comp):** 
   * *Query:* "Explain the difference between offering ESOP (Equity) versus Profit Sharing for middle managers."
 
-<video src="medias/Chat_Interface_demo.mp4" controls width="100%"></video>
+[**▶️ Click here to watch the Demo Video**](medias/Chat_Interface_demo.mp4)
 
 ![Chat Interface](medias/Chat_Interface.png)
 
